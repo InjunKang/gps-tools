@@ -1,0 +1,43 @@
+---
+import type { Locale } from '../config/site';
+import { formats, type ToolDef } from '../config/tools';
+import { ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+const shown = [formats[tool.from], formats[tool.to]];
+---
+
+<section aria-labelledby="formats">
+  <h2 id="formats">{ui[locale].formatsHeading}</h2>
+  <dl>
+    {
+      shown.map((format) => (
+        <>
+          <dt>
+            {format.label} <code>.{format.extension}</code>
+          </dt>
+          <dd>{format.about[locale]}</dd>
+        </>
+      ))
+    }
+  </dl>
+</section>
+
+<style>
+  dt {
+    margin-top: 1.25rem;
+    font-weight: 600;
+  }
+  dd {
+    margin: 0.25rem 0 0;
+  }
+  code {
+    color: var(--muted);
+    font-weight: 400;
+  }
+</style>

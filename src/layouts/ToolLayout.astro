@@ -1,0 +1,35 @@
+---
+// The one layout every tool page uses. Section order is fixed (see CLAUDE.md):
+// dropzone → how-to → formats → FAQ → related tools.
+// Ad slots sit between content sections, never next to the dropzone / download button.
+import AdSlot from '../components/AdSlot.astro';
+import Dropzone from '../components/Dropzone.astro';
+import Faq from '../components/Faq.astro';
+import FormatInfo from '../components/FormatInfo.astro';
+import HowTo from '../components/HowTo.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import type { Locale } from '../config/site';
+import { commonFaq, type ToolDef } from '../config/tools';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+const copy = tool.i18n[locale];
+const faq = [...copy.faq, ...commonFaq[locale]];
+---
+
+<BaseLayout locale={locale} slug={tool.slug} title={copy.title} description={copy.description} faq={faq}>
+  <h1>{copy.title}</h1>
+  <p class="lead">{copy.description}</p>
+  <Dropzone locale={locale} tool={tool} />
+  <HowTo locale={locale} tool={tool} />
+  <AdSlot locale={locale} id="after-how-to" />
+  <FormatInfo locale={locale} tool={tool} />
+  <Faq locale={locale} items={faq} />
+  <AdSlot locale={locale} id="after-faq" />
+  <RelatedTools locale={locale} tool={tool} />
+</BaseLayout>

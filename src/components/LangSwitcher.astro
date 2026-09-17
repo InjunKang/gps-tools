@@ -1,0 +1,43 @@
+---
+import { LOCALES, LOCALE_NAMES, type Locale } from '../config/site';
+import { localePath, ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+---
+
+<nav class="langs" aria-label={ui[locale].language}>
+  {
+    LOCALES.map((l) => (
+      <a href={localePath(l, slug)} hreflang={l} lang={l} aria-current={l === locale ? 'page' : undefined}>
+        {LOCALE_NAMES[l]}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.375rem 0;
+  }
+  a:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+  a[aria-current] {
+    color: var(--text);
+    font-weight: 600;
+  }
+</style>

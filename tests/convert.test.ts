@@ -160,6 +160,18 @@ describe('GPX → GeoJSON', () => {
   });
 });
 
+describe('GPX → GeoJSON sensor data', () => {
+  // The GPX → GeoJSON FAQ promises this; keep the promise honest.
+  it('strava.gpx: heart rate, cadence and temperature survive in coordinateProperties', () => {
+    const fc = JSON.parse(convert(fixture('strava.gpx'), 'gpx', 'geojson').output) as FeatureCollection;
+    expect(fc.features[0].properties?.coordinateProperties).toMatchObject({
+      heart: [117, 154, 160],
+      cads: [85, 79, 85],
+      atemps: [22, 20, 21],
+    });
+  });
+});
+
 describe('round trip', () => {
   it('GPX → KML → GPX preserves geometry, names and times', () => {
     for (const name of ['strava.gpx', 'blue_hills.gpx', 'multitrackgpx.gpx']) {

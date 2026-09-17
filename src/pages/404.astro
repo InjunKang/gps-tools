@@ -1,0 +1,15 @@
+---
+import ToolList from '../components/ToolList.astro';
+import { DEFAULT_LOCALE } from '../config/site';
+import { tools } from '../config/tools';
+import { ui } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const locale = DEFAULT_LOCALE;
+---
+
+<BaseLayout locale={locale} slug="" title="404" description={ui[locale].homeDescription}>
+  <h1>404</h1>
+  <p class="lead">{ui[locale].allTools}</p>
+  <ToolList locale={locale} tools={tools} />
+</BaseLayout>

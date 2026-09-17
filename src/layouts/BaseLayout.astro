@@ -1,0 +1,193 @@
+---
+import LangSwitcher from '../components/LangSwitcher.astro';
+import SeoHead from '../components/SeoHead.astro';
+import { SITE, type Locale } from '../config/site';
+import type { Faq } from '../config/tools';
+import { localePath, ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Tool slug, or '' for the home page. */
+  slug: string;
+  title: string;
+  description: string;
+  faq?: Faq[];
+}
+
+const { locale, slug, title, description, faq } = Astro.props;
+const t = ui[locale];
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SeoHead locale={locale} slug={slug} title={title} description={description} faq={faq} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container bar">
+        <a class="brand" href={localePath(locale)}>{SITE.name}</a>
+        <LangSwitcher locale={locale} slug={slug} />
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>{t.footerPrivacy}</p>
+        <p><a href={localePath(locale)}>{t.allTools}</a> · © {new Date().getFullYear()} {SITE.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #fbfbf9;
+    --surface: #fff;
+    --text: #1b1f1d;
+    --muted: #59615d;
+    --border: #d9ddd8;
+    --accent: #0b6e4f;
+    --accent-soft: #e6f3ee;
+    --on-accent: #fff;
+    --danger: #a3261e;
+    --focus: #1a73e8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121513;
+      --surface: #1a1e1c;
+      --text: #ecefed;
+      --muted: #a3aca7;
+      --border: #333a36;
+      --accent: #5fd0a5;
+      --accent-soft: #17302a;
+      --on-accent: #06281d;
+      --danger: #ff8f85;
+      --focus: #8ab4f8;
+    }
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font:
+      1rem/1.65 system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      'Noto Sans',
+      'Hiragino Sans',
+      'Yu Gothic UI',
+      sans-serif;
+  }
+  .container {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  h1 {
+    margin: 2.5rem 0 0.5rem;
+    font-size: clamp(1.75rem, 5vw, 2.375rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  h2 {
+    margin: 3rem 0 0.75rem;
+    font-size: 1.375rem;
+    line-height: 1.3;
+  }
+  .lead {
+    margin: 0 0 1.75rem;
+    color: var(--muted);
+    font-size: 1.0625rem;
+  }
+  a {
+    color: var(--accent);
+  }
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  ol {
+    padding-left: 1.25rem;
+  }
+  li + li {
+    margin-top: 0.5rem;
+  }
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.375rem;
+    border: 0;
+    border-radius: 0.625rem;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button.primary {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .button.primary:hover {
+    filter: brightness(1.08);
+  }
+  .button.link {
+    background: none;
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .site-header {
+    border-bottom: 1px solid var(--border);
+  }
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    min-height: 3.5rem;
+  }
+  .brand {
+    color: var(--text);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0.375rem 0;
+  }
+  .site-footer {
+    margin-top: 4rem;
+    padding: 1.5rem 0 2.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .site-footer p {
+    margin: 0.25rem 0;
+  }
+</style>

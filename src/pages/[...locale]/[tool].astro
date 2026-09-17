@@ -1,0 +1,21 @@
+---
+// Every tool page in every locale comes from src/config/tools.ts.
+import type { Locale } from '../../config/site';
+import { tools, type ToolDef } from '../../config/tools';
+import { localeParams } from '../../i18n';
+import ToolLayout from '../../layouts/ToolLayout.astro';
+
+export const getStaticPaths = () =>
+  localeParams().flatMap(({ locale, param }) =>
+    tools.map((tool) => ({ params: { locale: param, tool: tool.slug }, props: { locale, tool } })),
+  );
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+---
+
+<ToolLayout locale={locale} tool={tool} />

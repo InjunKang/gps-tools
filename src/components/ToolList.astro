@@ -1,0 +1,60 @@
+---
+// Card list of tools; used for "related tools" and for the home page.
+import type { Locale } from '../config/site';
+import type { ToolDef } from '../config/tools';
+import { localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  tools: ToolDef[];
+}
+
+const { locale, tools } = Astro.props;
+---
+
+<ul>
+  {
+    tools.map((tool) => (
+      <li>
+        <a href={localePath(locale, tool.slug)}>
+          <strong>{tool.i18n[locale].title}</strong>
+          <span>{tool.i18n[locale].description}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    display: block;
+    height: 100%;
+    padding: 1rem 1.125rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    border-color: var(--accent);
+  }
+  strong {
+    display: block;
+    color: var(--accent);
+  }
+  span {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+</style>

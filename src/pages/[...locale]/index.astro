@@ -1,0 +1,23 @@
+---
+import ToolList from '../../components/ToolList.astro';
+import type { Locale } from '../../config/site';
+import { tools } from '../../config/tools';
+import { localeParams, ui } from '../../i18n';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = () =>
+  localeParams().map(({ locale, param }) => ({ params: { locale: param }, props: { locale } }));
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = ui[locale];
+---
+
+<BaseLayout locale={locale} slug="" title={t.homeTitle} description={t.homeDescription}>
+  <h1>{t.homeHeading}</h1>
+  <p class="lead">{t.homeDescription}</p>
+  <ToolList locale={locale} tools={tools} />
+</BaseLayout>

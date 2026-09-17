@@ -1,0 +1,23 @@
+---
+import type { Locale } from '../config/site';
+import { relatedTools, type ToolDef } from '../config/tools';
+import { ui } from '../i18n';
+import ToolList from './ToolList.astro';
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+const related = relatedTools(tool);
+---
+
+{
+  related.length > 0 && (
+    <section aria-labelledby="related">
+      <h2 id="related">{ui[locale].relatedHeading}</h2>
+      <ToolList locale={locale} tools={related} />
+    </section>
+  )
+}

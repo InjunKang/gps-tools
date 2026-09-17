@@ -1,0 +1,21 @@
+---
+import type { Locale } from '../config/site';
+import { formats, type ToolDef } from '../config/tools';
+import { fill, ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+const t = ui[locale];
+const vars = { from: formats[tool.from].label, to: formats[tool.to].label };
+---
+
+<section aria-labelledby="how-to">
+  <h2 id="how-to">{fill(t.howToHeading, vars)}</h2>
+  <ol>
+    {t.howToSteps.map((step) => <li>{fill(step, vars)}</li>)}
+  </ol>
+</section>

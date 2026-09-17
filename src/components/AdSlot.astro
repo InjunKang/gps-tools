@@ -1,0 +1,28 @@
+---
+// A reserved, empty ad position. The fixed height means filling it later causes no layout shift.
+// Placement rule (see CLAUDE.md): never adjacent to the dropzone or the download button.
+import type { Locale } from '../config/site';
+import { ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  id: string;
+}
+
+const { locale, id } = Astro.props;
+---
+
+<aside class="ad-slot" data-ad-slot={id} aria-label={ui[locale].adLabel}></aside>
+
+<style>
+  .ad-slot {
+    height: 280px;
+    margin: 3rem 0;
+    contain: strict;
+  }
+  @media (min-width: 768px) {
+    .ad-slot {
+      height: 250px;
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import { SITE, type Locale } from '../config/site';
+import type { Faq } from '../config/tools';
+import { absoluteUrl, alternates, localePath } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Tool slug, or '' for the home page. */
+  slug: string;
+  title: string;
+  description: string;
+  faq?: Faq[];
+}
+
+const { locale, slug, title, description, faq = [] } = Astro.props;
+const canonical = absoluteUrl(localePath(locale, slug));
+const fullTitle = `${title} | ${SITE.name}`;
+
+const faqJsonLd = faq.length && {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{alternates(slug).map(({ hreflang, href }) => <link rel="alternate" hreflang={hreflang} href={href} />)}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale} />
+{faqJsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd).replace(/</g, '\\u003c')} />}

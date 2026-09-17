@@ -1,0 +1,261 @@
+---
+import type { Locale } from '../config/site';
+import { formats, type ToolDef } from '../config/tools';
+import { fill, ui } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  tool: ToolDef;
+}
+
+const { locale, tool } = Astro.props;
+const t = ui[locale];
+const from = formats[tool.from];
+const to = formats[tool.to];
+const vars = { from: from.label, to: to.label, ext: from.extension };
+
+// Everything the client script needs, already translated.
+const messages = {
+  stats: t.stats,
+  errors: Object.fromEntries(Object.entries(t.errors).map(([code, text]) => [code, fill(text, vars)])),
+};
+---
+
+<section
+  class="dropzone"
+  data-dropzone
+  data-from={tool.from}
+  data-to={tool.to}
+  data-mime={to.mime}
+  data-ext={to.extension}
+  data-locale={locale}
+  data-messages={JSON.stringify(messages)}
+>
+  <div class="pane" data-pane="idle">
+    <svg class="icon" viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
+      <path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+    </svg>
+    <p class="prompt">{fill(t.dropPrompt, vars)}</p>
+    <p class="hint">{t.dropHint}</p>
+    <label class="button primary">
+      <input type="file" accept={`.${from.extension}`} data-input />
+      {t.chooseFile}
+    </label>
+  </div>
+
+  <div class="pane" data-pane="working" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="prompt">{t.converting}</p>
+  </div>
+
+  <div class="pane" data-pane="done" hidden>
+    <p class="prompt">{fill(t.done, vars)}</p>
+    <p class="hint"><span data-filename></span><br /><span data-stats></span></p>
+    <a class="button primary" data-download href="#">{fill(t.download, vars)}</a>
+    <button class="button link" type="button" data-reset>{t.convertAnother}</button>
+  </div>
+
+  <div class="pane" data-pane="error" hidden>
+    <p class="prompt error" data-error></p>
+    <button class="button primary" type="button" data-reset>{t.tryAgain}</button>
+  </div>
+
+  <p class="badge">
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z" />
+    </svg>
+    {t.privacyBadge}
+  </p>
+  <p class="sr-only" role="status" aria-live="polite" data-live></p>
+</section>
+
+<script>
+  import type { ConvertRequest, ConvertResponse } from '../workers/protocol';
+
+  const MAX_BYTES = 200 * 1024 * 1024;
+  const zone = document.querySelector<HTMLElement>('[data-dropzone]');
+
+  if (zone) {
+    const { from, to, mime, ext, locale } = zone.dataset as Record<string, string>;
+    const messages = JSON.parse(zone.dataset.messages ?? '{}') as {
+      stats: string;
+      errors: Record<string, string>;
+    };
+    const $ = <T extends HTMLElement>(selector: string) => zone.querySelector<T>(selector)!;
+    const input = $<HTMLInputElement>('[data-input]');
+    const download = $<HTMLAnchorElement>('[data-download]');
+    const live = $('[data-live]');
+
+    let worker: Worker | undefined;
+    let objectUrl: string | undefined;
+
+    const show = (name: string) => {
+      zone.querySelectorAll<HTMLElement>('[data-pane]').forEach((pane) => {
+        pane.hidden = pane.dataset.pane !== name;
+      });
+    };
+
+    const fail = (code: string) => {
+      const text = messages.errors[code] ?? messages.errors.unknown;
+      $('[data-error]').textContent = text;
+      live.textContent = text;
+      show('error');
+      zone.querySelector<HTMLElement>('[data-pane="error"] [data-reset]')?.focus();
+    };
+
+    const reset = () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = undefined;
+      input.value = '';
+      live.textContent = '';
+      show('idle');
+      input.focus();
+    };
+
+    const start = (file: File) => {
+      if (file.size > MAX_BYTES) return fail('too-large');
+      show('working');
+
+      // The worker (and the XML parser it bundles) is only downloaded once a file is chosen.
+      worker ??= new Worker(new URL('../workers/convert.worker.ts', import.meta.url), { type: 'module' });
+      worker.onerror = () => fail('unknown');
+      worker.onmessage = ({ data }: MessageEvent<ConvertResponse>) => {
+        if (!data.ok) return fail(data.code);
+        objectUrl = URL.createObjectURL(data.blob);
+        const name = `${file.name.replace(/\.[^.]+$/, '')}.${ext}`;
+        download.href = objectUrl;
+        download.download = name;
+        $('[data-filename]').textContent = name;
+        const stats = messages.stats
+          .replace('{features}', data.stats.features.toLocaleString(locale))
+          .replace('{points}', data.stats.points.toLocaleString(locale));
+        $('[data-stats]').textContent = stats;
+        live.textContent = `${name} — ${stats}`;
+        show('done');
+        download.focus();
+      };
+      // Only the File handle crosses over; its contents are read inside the worker.
+      worker.postMessage({ file, from, to, mime } as ConvertRequest);
+    };
+
+    input.addEventListener('change', () => input.files?.[0] && start(input.files[0]));
+    zone.querySelectorAll('[data-reset]').forEach((button) => button.addEventListener('click', reset));
+
+    zone.addEventListener('dragover', (event) => {
+      event.preventDefault();
+      zone.classList.add('dragging');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragging'));
+    zone.addEventListener('drop', (event) => {
+      event.preventDefault();
+      zone.classList.remove('dragging');
+      const file = event.dataTransfer?.files[0];
+      if (file) start(file);
+    });
+    // A file dropped next to the zone must not make the browser navigate to it.
+    window.addEventListener('dragover', (event) => event.preventDefault());
+    window.addEventListener('drop', (event) => event.preventDefault());
+  }
+</script>
+
+<style>
+  .dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Fixed height: switching between idle / working / done / error never shifts the page. */
+    height: 21rem;
+    padding: 1.5rem 1rem 1rem;
+    border: 2px dashed var(--border);
+    border-radius: 1rem;
+    background: var(--surface);
+    text-align: center;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s;
+  }
+  .dropzone.dragging {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .pane[hidden] {
+    display: none;
+  }
+  .icon {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .prompt {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .prompt.error {
+    font-size: 1.0625rem;
+    color: var(--danger);
+    max-width: 32rem;
+  }
+  .hint {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+  }
+  input[type='file'] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  label:focus-within {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .badge svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+  .spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation-duration: 2.4s;
+    }
+  }
+</style>
