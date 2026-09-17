@@ -1,4 +1,6 @@
-# GPS Tools
+# GPXKit
+
+https://gpxkit.com
 
 Browser-only GPS file converters (GPX, KML, GeoJSON, CSV). Files are converted in a Web Worker
 and never leave the user's browser; a `connect-src 'self'` Content Security Policy enforces that.
@@ -23,7 +25,7 @@ Adding a tool is one entry in [`src/config/tools.ts`](src/config/tools.ts).
 
 | Variable | Where | Purpose |
 |---|---|---|
-| `SITE_URL` | build environment | Production origin, e.g. `https://gpstools.example`. Used for canonical URLs, hreflang, `sitemap-index.xml` and `robots.txt`. Local builds and GitHub Actions fall back to `https://example.com`; **a Cloudflare build fails without it**, because such a deploy looks fine while every SEO URL points at the placeholder. |
+| `SITE_URL` | build environment | Production origin: `https://gpxkit.com`. Used for canonical URLs, hreflang, `sitemap-index.xml` and `robots.txt`. Local builds and GitHub Actions fall back to `https://example.com`; **a Cloudflare build fails without it**, because such a deploy looks fine while every SEO URL points at the placeholder. |
 
 The site name lives in `src/config/site.ts`.
 
@@ -40,11 +42,15 @@ other branches get preview URLs.
 | Root directory | `/` |
 | Build variable | `SITE_URL` = production origin — under Settings → Build → *Build variables and secrets*, not the runtime *Variables and Secrets* |
 
-`wrangler.jsonc` points Cloudflare at `./dist`; `public/_headers` sets security and cache headers.
+`wrangler.jsonc` points Cloudflare at `./dist` and attaches the custom domain `gpxkit.com` (DNS record
+and certificate are created on deploy; the `workers.dev` and preview URLs are switched off so the
+site is reachable, and indexable, under one origin only). `www.gpxkit.com` is redirected to the apex
+by a Cloudflare Redirect Rule, which lives in the dashboard, not in this repo.
+ `public/_headers` sets security and cache headers.
 Manual deploy from a machine logged in with `npx wrangler login`:
 
 ```sh
-SITE_URL=https://your-domain npm run deploy
+SITE_URL=https://gpxkit.com npm run deploy
 ```
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `npm run verify` on every push and pull request.

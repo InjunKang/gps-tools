@@ -1,6 +1,5 @@
-// The only place the site name and URL are defined. The name is a placeholder until the owner
-// picks a brand. The URL comes from the SITE_URL build variable because canonical, hreflang,
-// sitemap and robots.txt all need the real production origin.
+// The only place the site name and URL are defined. The URL comes from the SITE_URL build
+// variable because canonical, hreflang, sitemap and robots.txt all need the real production origin.
 const PLACEHOLDER_URL = 'https://example.com';
 
 /**
@@ -33,7 +32,7 @@ export function resolveSiteUrl(env: Record<string, string | undefined>): string 
 }
 
 export const SITE = {
-  name: 'GPS Tools',
+  name: 'GPXKit',
   url: resolveSiteUrl(process.env),
 } as const;
 

@@ -1,4 +1,4 @@
-# GPS Tools — project rules
+# GPXKit (gpxkit.com) — project rules
 
 Browser-only GPS file converter site. **Files never leave the user's browser** — this is the
 product's core promise. Every rule below that mentions privacy is non-negotiable.
