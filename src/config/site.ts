@@ -1,8 +1,9 @@
-// The only place the site name and URL are defined. Both are placeholders until the
-// owner picks a brand and a domain.
+// The only place the site name and URL are defined. The name is a placeholder until the owner
+// picks a brand. The URL comes from the SITE_URL build variable (set it in Cloudflare and in CI)
+// because canonical, hreflang, sitemap and robots.txt all need the real production origin.
 export const SITE = {
   name: 'GPS Tools',
-  url: 'https://example.com',
+  url: (process.env.SITE_URL ?? 'https://example.com').replace(/\/+$/, ''),
 } as const;
 
 export const LOCALES = ['en', 'de', 'ja', 'es'] as const;

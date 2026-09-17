@@ -2,7 +2,7 @@
 
 Real-world GPX/KML samples copied unmodified from the test suite of
 [placemark/togeojson](https://github.com/placemark/togeojson/tree/main/test/data)
-(BSD 2-Clause, © 2019 Tom MacWright, Mapbox).
+(BSD 2-Clause, © 2019 Tom MacWright, Mapbox — see `LICENSE-togeojson`).
 
 | File | What it exercises |
 |---|---|

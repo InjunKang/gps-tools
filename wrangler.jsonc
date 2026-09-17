@@ -1,10 +1,13 @@
 {
-  // Static-only deployment: no Worker script, just the built files in ./dist.
+  // Static-only deployment: no Worker script, Cloudflare just serves the files in ./dist.
+  // Headers come from public/_headers (copied to dist/ by the build).
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "gps-tools",
   "compatibility_date": "2026-09-01",
   "assets": {
     "directory": "./dist",
-    "html_handling": "force-trailing-slash",
+    // /gpx-to-kml/ serves gpx-to-kml/index.html, and /gpx-to-kml redirects to it.
+    "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   }
 }
