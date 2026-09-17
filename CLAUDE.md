@@ -11,16 +11,18 @@ deployed to Cloudflare as static assets.
 - `npm run dev` — dev server
 - `npm run build` — type-check (`astro check`) + static build to `dist/`
 - `npm run preview` — serve `dist/`
-- `npm test` — Vitest (conversion + config integrity)
-
-Run `npm test` and `npm run build` before calling any change done.
+- `npm test` — Vitest (conversion, config integrity, and `dist/` checks if a build exists)
+- `npm run verify` — build, then test. **Run this before calling any change done.**
 
 ## Privacy rules (hard)
 
 1. No code path may send file contents, file names, or derived data over the network.
    No `fetch`/`XMLHttpRequest`/`sendBeacon`/WebSocket in `src/lib`, `src/workers`, or the dropzone script.
-2. `public/_headers` sets a CSP with `connect-src 'self'`. Do not loosen it without the owner's
-   explicit decision (adding an ad network will require it — raise it, don't just do it).
+2. The CSP (`connect-src 'self'`, `default-src 'self'`) is configured in `astro.config.ts` (`security.csp`)
+   and emitted as a `<meta>` with script/style hashes. Do not loosen it without the owner's explicit
+   decision (adding an ad network will require it — raise it, don't just do it).
+   The `<meta>` only works inside `<head>`: never render text or non-head elements in `<head>`
+   (e.g. `{count && <x/>}` renders `0`). `tests/build-output.test.ts` guards this.
 3. No third-party scripts, fonts, analytics, or CDNs. Everything is self-hosted and bundled.
 4. The main thread never reads file contents: pass the `File` object to the worker and read it there.
 
@@ -35,6 +37,9 @@ Run `npm test` and `npm run build` before calling any change done.
   Never write a direct A→B converter.
 - `src/lib/convert` is pure: no DOM, no `window`, no Astro imports. It must run unchanged in
   a Web Worker and in Node (tests). Web Workers have no `DOMParser` — XML parsing uses `@xmldom/xmldom`.
+- Known togeojson bugs are worked around in the readers, with a regression test each
+  (currently: a two-point `gx:Track` is read as a Point — see `readers/kml.ts`).
+- A one-point track segment cannot be a GeoJSON line and is dropped. This is documented in the FAQ.
 - Conversion always runs in `src/workers/convert.worker.ts`. The worker (and the parser bundle)
   is created lazily on first file selection, never on page load.
 - Site name and URL live only in `src/config/site.ts`.
@@ -76,6 +81,10 @@ explanations → FAQ → related tools.
   not on string snapshots.
 - New format or writer change → add/extend a fixture-based test first (TDD).
 - `tests/tools-config.test.ts` guards config integrity (unique slugs, valid formats, all locales).
+- `tests/build-output.test.ts` checks `dist/`: CSP in `<head>`, no third-party resources, hreflang,
+  section order / ad-slot placement, sitemap.
+- FAQ copy makes factual claims about what conversions keep or lose. If you change converter
+  behavior, update the FAQ; if you add a claim, back it with a test.
 
 ## Conventions
 

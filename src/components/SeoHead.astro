@@ -16,7 +16,9 @@ const { locale, slug, title, description, faq = [] } = Astro.props;
 const canonical = absoluteUrl(localePath(locale, slug));
 const fullTitle = `${title} | ${SITE.name}`;
 
-const faqJsonLd = faq.length && {
+// `null`, not `0`: a stray text node in <head> ends the head early and pushes the CSP <meta>
+// into <body>, where browsers ignore it.
+const faqJsonLd = faq.length === 0 ? null : {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: faq.map(({ q, a }) => ({
