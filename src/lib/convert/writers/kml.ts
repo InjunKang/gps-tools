@@ -1,7 +1,7 @@
 import type { Feature, Geometry, Position } from 'geojson';
-import { describeFeature, segmentTimes } from '../geometry';
+import { describeFeature, extraProperties, segmentTimes } from '../geometry';
 import type { Writer } from '../types';
-import { el } from '../xml';
+import { el, escapeXml } from '../xml';
 
 const HEADER =
   '<?xml version="1.0" encoding="UTF-8"?>\n' +
@@ -57,6 +57,14 @@ function geometryXml(feature: Feature, geometry: Geometry): string {
   }
 }
 
+// Attributes are why GIS users keep data in GeoJSON; ExtendedData is where KML puts them.
+function extendedData(feature: Feature): string {
+  const data = extraProperties(feature).map(
+    ([key, value]) => `<Data name="${escapeXml(key)}"><value>${escapeXml(value)}</value></Data>`,
+  );
+  return data.length ? `<ExtendedData>${data.join('')}</ExtendedData>` : '';
+}
+
 export const writeKml: Writer = (fc) => {
   const placemarks = fc.features
     .filter((feature) => feature.geometry)
@@ -65,7 +73,7 @@ export const writeKml: Writer = (fc) => {
       const isPoint = feature.geometry.type === 'Point';
       const timeStamp = isPoint && time ? `<TimeStamp>${el('when', time)}</TimeStamp>` : '';
       return (
-        `<Placemark>${el('name', name)}${el('description', description)}${timeStamp}\n` +
+        `<Placemark>${el('name', name)}${el('description', description)}${timeStamp}${extendedData(feature)}\n` +
         `${geometryXml(feature, feature.geometry)}\n</Placemark>`
       );
     });

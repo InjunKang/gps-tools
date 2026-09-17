@@ -96,3 +96,13 @@ describe('decodeXml', () => {
     expect(convert(decodeXml(latin1), 'gpx', 'kml').output).toContain('<name>Zürich</name>');
   });
 });
+
+describe('GPX → KML attributes', () => {
+  it('keeps track-level GPX fields as ExtendedData but not stray per-point sensor readings', async () => {
+    const { fixture } = await import('./helpers');
+    const blueHills = convert(fixture('blue_hills.gpx'), 'gpx', 'kml').output;
+    expect(blueHills).toContain('<Data name="cmt"><value>Sun Jun 24 15:08:39 2001</value></Data>');
+    const strava = convert(fixture('strava.gpx'), 'gpx', 'kml').output;
+    expect(strava).not.toContain('gpxtpx_');
+  });
+});

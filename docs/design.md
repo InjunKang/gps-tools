@@ -42,6 +42,15 @@ related tools are derived from shared formats, and `@astrojs/sitemap` emits href
 - GPX → CSV: one row per point (`type,name,description,segment,latitude,longitude,elevation,time`),
   sensor columns only when present, RFC 4180 quoting, CRLF, UTF-8 BOM for Excel, and a leading
   apostrophe on text cells that a spreadsheet would run as a formula.
+- GeoJSON input: Feature, FeatureCollection or bare geometry; features with `geometry: null` are skipped.
+  Coordinates are validated (finite numbers, at least lon/lat). A `crs` member other than CRS84 /
+  EPSG:4326, or any position outside ±180 / ±90, is rejected as `not-wgs84`: QGIS and ogr2ogr export
+  projected GeoJSON, and GPX/KML would silently turn metres into nonsense degrees.
+- KML output writes every flat string / number / boolean property to `ExtendedData` (so GeoJSON
+  attributes survive, and GPX fields such as `cmt` too). Skipped: nested values, nulls, keys starting
+  with `_`, and togeojson's stray `gpxtpx_*` per-point readings.
+- GPX → GeoJSON → GPX round-trips waypoints, routes, segments, elevation and time. Sensor values are
+  not written back to GPX (no extension writer yet).
 - KML → GeoJSON: styles become simplestyle properties, ExtendedData becomes properties; ground
   overlays and network links survive only as an outline polygon plus their URL.
 

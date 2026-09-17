@@ -12,11 +12,29 @@ function text(value: unknown): string | undefined {
 export function describeFeature(feature: Feature) {
   const p: Props = feature.properties ?? {};
   return {
-    name: text(p.name),
+    name: text(p.name) ?? text(p.title),
     description: text(p.desc) ?? text(p.description),
     time: text(p.time) ?? text(p.timestamp),
     isRoute: p._gpxType === 'rte',
   };
+}
+
+// Written by describeFeature() or internal to the pivot format, so never repeated as plain data.
+const RESERVED = new Set(['name', 'title', 'desc', 'description', 'time', 'timestamp', 'coordinateProperties', 'styleUrl']);
+
+/** The remaining flat attributes of a feature: strings, numbers and booleans only. */
+export function extraProperties(feature: Feature): [key: string, value: string][] {
+  return Object.entries(feature.properties ?? {})
+    .filter(
+      ([key, value]) =>
+        !RESERVED.has(key) &&
+        !key.startsWith('_') &&
+        // togeojson leaves one stray per-point sensor reading on the track itself (gpxtpx_hr: "160");
+        // as a track attribute it would read as "the heart rate of this track".
+        !key.startsWith('gpxtpx_') &&
+        ['string', 'number', 'boolean'].includes(typeof value),
+    )
+    .map(([key, value]) => [key, String(value)]);
 }
 
 /**

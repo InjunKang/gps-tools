@@ -13,6 +13,7 @@ const t = ui[locale];
 const from = formats[tool.from];
 const to = formats[tool.to];
 const vars = { from: from.label, to: to.label, ext: from.extension };
+const accept = [from.extension, ...(from.alsoAccepts ?? [])].map((ext) => `.${ext}`).join(',');
 
 // Everything the client script needs, already translated.
 const messages = {
@@ -38,7 +39,7 @@ const messages = {
     <p class="prompt">{fill(t.dropPrompt, vars)}</p>
     <p class="hint">{t.dropHint}</p>
     <label class="button primary">
-      <input type="file" accept={`.${from.extension}`} data-input />
+      <input type="file" accept={accept} data-input />
       {t.chooseFile}
     </label>
   </div>

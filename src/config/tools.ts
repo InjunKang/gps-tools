@@ -12,6 +12,8 @@ export interface Faq {
 export interface FormatDef {
   label: string;
   extension: string;
+  /** Other extensions the same format is commonly saved with; offered in the file picker. */
+  alsoAccepts?: string[];
   mime: string;
   /** Shown in the "about the formats" section of every tool that reads or writes this format. */
   about: Record<Locale, string>;
@@ -58,6 +60,7 @@ export const formats: Record<FormatId, FormatDef> = {
   geojson: {
     label: 'GeoJSON',
     extension: 'geojson',
+    alsoAccepts: ['json'],
     mime: 'application/geo+json',
     about: {
       en: 'GeoJSON (RFC 7946) is the JSON format for geographic features used by web maps and GIS software such as Leaflet, Mapbox, QGIS and PostGIS. Coordinates are stored as longitude, latitude, elevation.',
@@ -539,11 +542,179 @@ export const tools: ToolDef[] = [
       },
     },
   },
+  {
+    slug: 'geojson-to-gpx',
+    from: 'geojson',
+    to: 'gpx',
+    i18n: {
+      en: {
+        title: 'GeoJSON to GPX Converter',
+        description:
+          'Convert GeoJSON from QGIS, geojson.io or Mapbox to GPX for Garmin, Komoot, Strava and other GPS devices and apps. Free, instant, and private — nothing is uploaded.',
+        faq: [
+          {
+            q: 'How are GeoJSON features mapped to GPX?',
+            a: 'Points become waypoints, LineStrings become tracks, and a MultiLineString becomes one track with several segments. GPX has no polygons, so polygon outlines, including holes, are written as track segments. The name is read from the name or title property, the description from description, and elevation from the third coordinate. A Feature, a FeatureCollection or a bare geometry all work.',
+          },
+          {
+            q: 'Can the GPX file contain timestamps?',
+            a: 'Plain GeoJSON has no per-point time. If the file carries times in properties.coordinateProperties.times, the layout written by this site’s GPX to GeoJSON converter, they become GPX timestamps, so a GPX → GeoJSON → GPX round trip keeps waypoints, routes, segments, elevation and time. Heart rate and other sensor values are not written to GPX.',
+          },
+          {
+            q: 'Why does it say my file does not use WGS 84?',
+            a: 'GPX only supports WGS 84 longitude and latitude in degrees. GeoJSON exported from QGIS or ogr2ogr in a projected system such as EPSG:3857 contains metres, which would produce an unusable GPX file, so it is rejected. Export the layer again with the CRS set to EPSG:4326.',
+          },
+        ],
+      },
+      de: {
+        title: 'GeoJSON in GPX umwandeln',
+        description:
+          'GeoJSON aus QGIS, geojson.io oder Mapbox in GPX für Garmin, Komoot, Strava und andere GPS-Geräte und Apps umwandeln. Kostenlos, sofort und privat – nichts wird hochgeladen.',
+        faq: [
+          {
+            q: 'Wie werden GeoJSON-Features in GPX übertragen?',
+            a: 'Punkte werden zu Wegpunkten, LineStrings zu Tracks, und ein MultiLineString wird zu einem Track mit mehreren Segmenten. GPX kennt keine Polygone, daher werden Polygonumrisse einschließlich Löchern als Tracksegmente geschrieben. Der Name stammt aus der Property name oder title, die Beschreibung aus description und die Höhe aus der dritten Koordinate. Ein Feature, eine FeatureCollection oder eine einzelne Geometrie funktionieren gleichermaßen.',
+          },
+          {
+            q: 'Kann die GPX-Datei Zeitstempel enthalten?',
+            a: 'Einfaches GeoJSON kennt keine Zeit pro Punkt. Enthält die Datei Zeiten in properties.coordinateProperties.times – so schreibt sie der GPX-in-GeoJSON-Konverter dieser Seite –, werden daraus GPX-Zeitstempel. Ein Durchlauf GPX → GeoJSON → GPX erhält so Wegpunkte, Routen, Segmente, Höhe und Zeit. Herzfrequenz und andere Sensorwerte werden nicht in GPX geschrieben.',
+          },
+          {
+            q: 'Warum heißt es, meine Datei verwende kein WGS 84?',
+            a: 'GPX unterstützt nur WGS-84-Längen- und Breitengrade in Grad. GeoJSON, das aus QGIS oder ogr2ogr in einem projizierten System wie EPSG:3857 exportiert wurde, enthält Meter und ergäbe eine unbrauchbare GPX-Datei; deshalb wird es abgelehnt. Exportieren Sie den Layer erneut mit dem KBS EPSG:4326.',
+          },
+        ],
+      },
+      ja: {
+        title: 'GeoJSON GPX 変換ツール',
+        description:
+          'QGIS、geojson.io、MapboxなどのGeoJSONを、Garmin、Komoot、StravaなどのGPS機器やアプリで使えるGPXに変換します。無料・即時変換で、ファイルはどこにもアップロードされません。',
+        faq: [
+          {
+            q: 'GeoJSONのフィーチャーはGPXでどう扱われますか?',
+            a: 'Pointはウェイポイント、LineStringはトラックになり、MultiLineStringは複数セグメントを持つ1つのトラックになります。GPXにはポリゴンがないため、ポリゴンの輪郭(穴を含む)はトラックセグメントとして出力されます。名前はnameまたはtitleプロパティ、説明はdescription、標高は3番目の座標値から読み取ります。Feature、FeatureCollection、単体のジオメトリのいずれにも対応しています。',
+          },
+          {
+            q: 'GPXにタイムスタンプを含められますか?',
+            a: '通常のGeoJSONには点ごとの時刻がありません。properties.coordinateProperties.times(このサイトのGPX→GeoJSON変換が出力する形式)に時刻が入っている場合は、GPXのタイムスタンプになります。そのためGPX→GeoJSON→GPXと往復しても、ウェイポイント、ルート、セグメント、標高、時刻が保持されます。心拍数などのセンサー値はGPXには出力されません。',
+          },
+          {
+            q: '「WGS 84ではありません」と表示されるのはなぜですか?',
+            a: 'GPXが扱えるのは、度単位のWGS 84経度・緯度だけです。QGISやogr2ogrからEPSG:3857などの投影座標系で書き出したGeoJSONにはメートル単位の値が入っており、そのまま変換すると使えないGPXになるため受け付けません。座標参照系をEPSG:4326にしてレイヤを書き出し直してください。',
+          },
+        ],
+      },
+      es: {
+        title: 'Convertir GeoJSON a GPX',
+        description:
+          'Convierte GeoJSON de QGIS, geojson.io o Mapbox a GPX para Garmin, Komoot, Strava y otros dispositivos y apps GPS. Gratis, al instante y privado: no se sube nada.',
+        faq: [
+          {
+            q: '¿Cómo se trasladan las entidades GeoJSON a GPX?',
+            a: 'Los puntos se convierten en waypoints, los LineString en tracks y un MultiLineString en un track con varios segmentos. GPX no tiene polígonos, así que los contornos de los polígonos, incluidos los huecos, se escriben como segmentos de track. El nombre se lee de la propiedad name o title, la descripción de description y la altitud de la tercera coordenada. Sirven tanto un Feature como una FeatureCollection o una geometría suelta.',
+          },
+          {
+            q: '¿Puede el archivo GPX contener marcas de tiempo?',
+            a: 'El GeoJSON normal no tiene hora por punto. Si el archivo lleva horas en properties.coordinateProperties.times, el formato que escribe el conversor de GPX a GeoJSON de este sitio, se convierten en marcas de tiempo GPX, de modo que un ciclo GPX → GeoJSON → GPX conserva waypoints, rutas, segmentos, altitud y hora. La frecuencia cardíaca y otros valores de sensores no se escriben en GPX.',
+          },
+          {
+            q: '¿Por qué dice que mi archivo no usa WGS 84?',
+            a: 'GPX solo admite longitud y latitud WGS 84 en grados. Un GeoJSON exportado desde QGIS u ogr2ogr en un sistema proyectado como EPSG:3857 contiene metros y daría un GPX inservible, por eso se rechaza. Vuelve a exportar la capa con el SRC EPSG:4326.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'geojson-to-kml',
+    from: 'geojson',
+    to: 'kml',
+    i18n: {
+      en: {
+        title: 'GeoJSON to KML Converter',
+        description:
+          'Convert GeoJSON from QGIS, geojson.io or Mapbox to KML for Google Earth and Google My Maps, keeping feature attributes. Free, instant, and nothing is uploaded.',
+        faq: [
+          {
+            q: 'How are GeoJSON geometries mapped to KML?',
+            a: 'Points, LineStrings and Polygons, including holes, keep their type. MultiPoint, MultiLineString, MultiPolygon and GeometryCollection become a KML MultiGeometry. A line that carries per-point times in properties.coordinateProperties.times is written as gx:Track so Google Earth can animate it.',
+          },
+          {
+            q: 'Are feature properties kept?',
+            a: 'Yes. name (or title) and description become the placemark’s name and description, and every other text, number or true/false property is written to ExtendedData, which Google Earth shows in the placemark balloon. Nested objects, arrays and empty values are skipped, and simplestyle colors such as stroke or marker-color are kept as data but do not change how the placemark is drawn.',
+          },
+          {
+            q: 'Why does it say my file does not use WGS 84?',
+            a: 'KML only supports WGS 84 longitude and latitude in degrees. GeoJSON exported from QGIS or ogr2ogr in a projected system such as EPSG:3857 contains metres and would land in the wrong place, so it is rejected. Export the layer again with the CRS set to EPSG:4326.',
+          },
+        ],
+      },
+      de: {
+        title: 'GeoJSON in KML umwandeln',
+        description:
+          'GeoJSON aus QGIS, geojson.io oder Mapbox in KML für Google Earth und Google My Maps umwandeln – Attribute bleiben erhalten. Kostenlos, sofort, und nichts wird hochgeladen.',
+        faq: [
+          {
+            q: 'Wie werden GeoJSON-Geometrien in KML abgebildet?',
+            a: 'Punkte, LineStrings und Polygone einschließlich Löchern behalten ihren Typ. MultiPoint, MultiLineString, MultiPolygon und GeometryCollection werden zu einer KML-MultiGeometry. Eine Linie mit Zeiten pro Punkt in properties.coordinateProperties.times wird als gx:Track geschrieben, sodass Google Earth sie animieren kann.',
+          },
+          {
+            q: 'Bleiben die Properties der Features erhalten?',
+            a: 'Ja. name (oder title) und description werden zu Name und Beschreibung der Ortsmarke, und jede weitere Property mit Text, Zahl oder Wahrheitswert wird in ExtendedData geschrieben, das Google Earth im Infofenster anzeigt. Verschachtelte Objekte, Arrays und leere Werte werden übersprungen. simplestyle-Farben wie stroke oder marker-color bleiben als Daten erhalten, ändern aber nicht die Darstellung der Ortsmarke.',
+          },
+          {
+            q: 'Warum heißt es, meine Datei verwende kein WGS 84?',
+            a: 'KML unterstützt nur WGS-84-Längen- und Breitengrade in Grad. GeoJSON, das aus QGIS oder ogr2ogr in einem projizierten System wie EPSG:3857 exportiert wurde, enthält Meter und würde an der falschen Stelle landen; deshalb wird es abgelehnt. Exportieren Sie den Layer erneut mit dem KBS EPSG:4326.',
+          },
+        ],
+      },
+      ja: {
+        title: 'GeoJSON KML 変換ツール',
+        description:
+          'QGIS、geojson.io、MapboxなどのGeoJSONを、属性を保ったままGoogle EarthやGoogleマイマップ用のKMLに変換します。無料・即時変換で、ファイルはアップロードされません。',
+        faq: [
+          {
+            q: 'GeoJSONのジオメトリはKMLでどう表現されますか?',
+            a: 'Point、LineString、Polygon(穴を含む)はそのままの型で出力されます。MultiPoint、MultiLineString、MultiPolygon、GeometryCollectionはKMLのMultiGeometryになります。properties.coordinateProperties.timesに点ごとの時刻を持つラインはgx:Trackとして出力され、Google Earthでアニメーション再生できます。',
+          },
+          {
+            q: 'フィーチャーのプロパティは保持されますか?',
+            a: 'はい。name(またはtitle)とdescriptionは目印の名前と説明になり、それ以外の文字列・数値・真偽値のプロパティはすべてExtendedDataに出力され、Google Earthの吹き出しに表示されます。入れ子のオブジェクト、配列、空の値はスキップされます。strokeやmarker-colorなどのsimplestyleの色はデータとしては残りますが、目印の見た目には反映されません。',
+          },
+          {
+            q: '「WGS 84ではありません」と表示されるのはなぜですか?',
+            a: 'KMLが扱えるのは、度単位のWGS 84経度・緯度だけです。QGISやogr2ogrからEPSG:3857などの投影座標系で書き出したGeoJSONにはメートル単位の値が入っており、誤った位置に表示されてしまうため受け付けません。座標参照系をEPSG:4326にしてレイヤを書き出し直してください。',
+          },
+        ],
+      },
+      es: {
+        title: 'Convertir GeoJSON a KML',
+        description:
+          'Convierte GeoJSON de QGIS, geojson.io o Mapbox a KML para Google Earth y Google My Maps conservando los atributos. Gratis, al instante, y no se sube nada.',
+        faq: [
+          {
+            q: '¿Cómo se representan las geometrías GeoJSON en KML?',
+            a: 'Los puntos, LineString y polígonos, con sus huecos, conservan su tipo. MultiPoint, MultiLineString, MultiPolygon y GeometryCollection pasan a ser una MultiGeometry de KML. Una línea con hora por punto en properties.coordinateProperties.times se escribe como gx:Track para que Google Earth pueda animarla.',
+          },
+          {
+            q: '¿Se conservan las propiedades de las entidades?',
+            a: 'Sí. name (o title) y description pasan a ser el nombre y la descripción del marcador, y cualquier otra propiedad de texto, número o verdadero/falso se escribe en ExtendedData, que Google Earth muestra en el globo del marcador. Los objetos anidados, los arrays y los valores vacíos se omiten. Los colores simplestyle como stroke o marker-color se conservan como datos, pero no cambian el aspecto del marcador.',
+          },
+          {
+            q: '¿Por qué dice que mi archivo no usa WGS 84?',
+            a: 'KML solo admite longitud y latitud WGS 84 en grados. Un GeoJSON exportado desde QGIS u ogr2ogr en un sistema proyectado como EPSG:3857 contiene metros y aparecería en el lugar equivocado, por eso se rechaza. Vuelve a exportar la capa con el SRC EPSG:4326.',
+          },
+        ],
+      },
+    },
+  },
 ];
 
 export const getTool = (slug: string): ToolDef | undefined => tools.find((t) => t.slug === slug);
 
-/** Tools that share a format with `tool`; the exact reverse conversion comes first. */
+const MAX_RELATED = 4;
+
+/** Up to four tools that share a format with `tool`; the exact reverse conversion comes first. */
 export function relatedTools(tool: ToolDef): ToolDef[] {
   const score = (t: ToolDef): number =>
     (t.from === tool.to && t.to === tool.from ? 4 : 0) +
@@ -551,5 +722,6 @@ export function relatedTools(tool: ToolDef): ToolDef[] {
     (t.to === tool.to || t.from === tool.to || t.to === tool.from ? 1 : 0);
   return tools
     .filter((t) => t !== tool && score(t) > 0)
-    .sort((a, b) => score(b) - score(a));
+    .sort((a, b) => score(b) - score(a))
+    .slice(0, MAX_RELATED);
 }

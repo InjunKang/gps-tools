@@ -5,7 +5,7 @@ export type FormatId = 'gpx' | 'kml' | 'geojson' | 'csv';
 export type Reader = (text: string) => FeatureCollection;
 export type Writer = (fc: FeatureCollection) => string;
 
-export type ConvertErrorCode = 'invalid-file' | 'wrong-format' | 'empty' | 'unsupported';
+export type ConvertErrorCode = 'invalid-file' | 'wrong-format' | 'empty' | 'unsupported' | 'not-wgs84';
 
 /** `code` is what the UI translates; `message` is for developers only. */
 export class ConvertError extends Error {
