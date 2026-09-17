@@ -86,6 +86,11 @@ const messages = {
     const download = $<HTMLAnchorElement>('[data-download]');
     const live = $('[data-live]');
 
+    // iOS and Android pickers filter by system file type, and neither knows .gpx or .kml, so an
+    // extension-only `accept` can leave every file greyed out. On touch devices, show all files;
+    // a wrong pick still gets the translated "wrong format" error.
+    if (matchMedia('(pointer: coarse)').matches) input.removeAttribute('accept');
+
     let worker: Worker | undefined;
     let objectUrl: string | undefined;
 

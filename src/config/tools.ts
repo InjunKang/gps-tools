@@ -219,7 +219,7 @@ export const tools: ToolDef[] = [
         faq: [
           {
             q: 'How are KML features mapped to GPX?',
-            a: 'Placemarks with a point become waypoints. Paths (LineString) and gx:Track become tracks, keeping elevation and, for gx:Track, timestamps. A gx:MultiTrack becomes one track with several segments. Names and descriptions are kept.',
+            a: 'Placemarks with a point become waypoints. Paths (LineString) and gx:Track become tracks, keeping elevation and, for gx:Track, timestamps. A gx:MultiTrack becomes one track with several segments. Names and descriptions are kept. Paths drawn on the ground in Google Earth carry an altitude of 0 rather than a real elevation, so no elevation is written for them.',
           },
           {
             q: 'What happens to polygons and styles?',
@@ -238,7 +238,7 @@ export const tools: ToolDef[] = [
         faq: [
           {
             q: 'Wie werden KML-Elemente in GPX übertragen?',
-            a: 'Ortsmarken mit einem Punkt werden zu Wegpunkten. Pfade (LineString) und gx:Track werden zu Tracks; die Höhe und bei gx:Track auch die Zeitstempel bleiben erhalten. Ein gx:MultiTrack wird zu einem Track mit mehreren Segmenten. Namen und Beschreibungen bleiben erhalten.',
+            a: 'Ortsmarken mit einem Punkt werden zu Wegpunkten. Pfade (LineString) und gx:Track werden zu Tracks; die Höhe und bei gx:Track auch die Zeitstempel bleiben erhalten. Ein gx:MultiTrack wird zu einem Track mit mehreren Segmenten. Namen und Beschreibungen bleiben erhalten. In Google Earth auf den Boden gezeichnete Pfade haben die Höhe 0 statt einer echten Höhe; für sie wird daher keine Höhe geschrieben.',
           },
           {
             q: 'Was passiert mit Polygonen und Stilen?',
@@ -257,7 +257,7 @@ export const tools: ToolDef[] = [
         faq: [
           {
             q: 'KMLの要素はGPXでどう扱われますか?',
-            a: 'ポイントの目印はウェイポイントになります。パス(LineString)とgx:Trackはトラックになり、標高と、gx:Trackの場合はタイムスタンプも保持されます。gx:MultiTrackは複数セグメントを持つ1つのトラックになります。名前と説明も引き継がれます。',
+            a: 'ポイントの目印はウェイポイントになります。パス(LineString)とgx:Trackはトラックになり、標高と、gx:Trackの場合はタイムスタンプも保持されます。gx:MultiTrackは複数セグメントを持つ1つのトラックになります。名前と説明も引き継がれます。Google Earthで地面に沿って描いたパスは実際の標高ではなく高度0を持つため、標高は出力されません。',
           },
           {
             q: 'ポリゴンやスタイルはどうなりますか?',
@@ -276,7 +276,7 @@ export const tools: ToolDef[] = [
         faq: [
           {
             q: '¿Cómo se trasladan los elementos KML a GPX?',
-            a: 'Los marcadores con un punto se convierten en waypoints. Las rutas (LineString) y gx:Track se convierten en tracks, conservando la altitud y, en gx:Track, las marcas de tiempo. Un gx:MultiTrack pasa a ser un track con varios segmentos. Se conservan nombres y descripciones.',
+            a: 'Los marcadores con un punto se convierten en waypoints. Las rutas (LineString) y gx:Track se convierten en tracks, conservando la altitud y, en gx:Track, las marcas de tiempo. Un gx:MultiTrack pasa a ser un track con varios segmentos. Se conservan nombres y descripciones. Las rutas dibujadas sobre el terreno en Google Earth tienen altitud 0 en lugar de una altitud real, por lo que no se escribe altitud para ellas.',
           },
           {
             q: '¿Qué ocurre con los polígonos y los estilos?',

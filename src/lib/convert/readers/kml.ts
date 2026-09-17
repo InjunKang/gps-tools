@@ -1,5 +1,5 @@
 import { kml } from '@tmcw/togeojson';
-import type { Feature, FeatureCollection, LineString } from 'geojson';
+import type { Feature, FeatureCollection, Geometry, LineString, Position } from 'geojson';
 import type { Reader } from '../types';
 import { parseXml } from '../xml';
 
@@ -42,10 +42,32 @@ function normalize(feature: Feature): Feature {
   };
 }
 
+function positionsOf(geometry: Geometry): Position[] {
+  if (geometry.type === 'GeometryCollection') return geometry.geometries.flatMap(positionsOf);
+  const out: Position[] = [];
+  const walk = (c: unknown[]): void => {
+    if (typeof c[0] === 'number') out.push(c as Position);
+    else c.forEach((x) => walk(x as unknown[]));
+  };
+  walk(geometry.coordinates);
+  return out;
+}
+
+// Features drawn in Google Earth are clamped to the ground and carry a literal altitude of 0.
+// Passing that on as real data gives GPX editors a flat 0 m profile, so when every altitude of
+// a feature is 0 it is treated as "no altitude". A 0 among real altitudes is kept.
+function dropGroundAltitude(feature: Feature): Feature {
+  const positions = positionsOf(feature.geometry);
+  if (positions.some((p) => p.length > 2) && positions.every((p) => p.length < 3 || p[2] === 0)) {
+    positions.forEach((p) => (p.length = 2));
+  }
+  return feature;
+}
+
 export const readKml: Reader = (text) => {
   const doc = parseXml(text, 'kml');
   padShortTracks(doc);
   // skipNullGeometry guarantees every feature has a geometry, which the library's types can't express.
   const fc = kml(doc, { skipNullGeometry: true }) as FeatureCollection;
-  return { ...fc, features: fc.features.map(normalize) };
+  return { ...fc, features: fc.features.map(normalize).map(dropGroundAltitude) };
 };

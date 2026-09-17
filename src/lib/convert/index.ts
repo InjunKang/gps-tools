@@ -7,6 +7,7 @@ import { writeGeojson } from './writers/geojson';
 import { writeGpx } from './writers/gpx';
 import { writeKml } from './writers/kml';
 
+export { decodeXml } from './decode';
 export { ConvertError } from './types';
 export type { ConvertErrorCode, ConvertResult, ConvertStats, FormatId } from './types';
 

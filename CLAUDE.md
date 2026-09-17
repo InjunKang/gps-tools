@@ -38,7 +38,11 @@ deployed to Cloudflare as static assets.
 - `src/lib/convert` is pure: no DOM, no `window`, no Astro imports. It must run unchanged in
   a Web Worker and in Node (tests). Web Workers have no `DOMParser` — XML parsing uses `@xmldom/xmldom`.
 - Known togeojson bugs are worked around in the readers, with a regression test each
-  (currently: a two-point `gx:Track` is read as a Point — see `readers/kml.ts`).
+  (a two-point `gx:Track` is read as a Point — `readers/kml.ts`; sensor data is matched by the
+  literal prefix `gpxtpx:`, but Garmin Connect uses `ns3:` — `readers/gpx.ts`).
+- The worker decodes bytes with `decodeXml()` (BOM / XML declaration), never `file.text()`:
+  older tools write ISO-8859-1 and `text()` always assumes UTF-8.
+- An all-zero altitude in a KML feature means "clamped to ground", not sea level; the KML reader drops it.
 - A one-point track segment cannot be a GeoJSON line and is dropped. This is documented in the FAQ.
 - Conversion always runs in `src/workers/convert.worker.ts`. The worker (and the parser bundle)
   is created lazily on first file selection, never on page load.
@@ -75,6 +79,9 @@ explanations → FAQ → related tools.
 - Reserve space for anything that appears later (results panel, ad slots) — CLS must stay ~0.
 
 ## Testing
+
+- `tests/real-world.test.ts` holds regressions found with real Strava / Garmin Connect / Komoot /
+  Google Earth files. When a user-reported file breaks, reduce it to a test there first.
 
 - Conversion tests run against real sample files in `tests/fixtures/` (sources and licenses in
   its README). Assert on parsed values (point counts, coordinates, elevation, time, names),
