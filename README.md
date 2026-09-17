@@ -23,7 +23,7 @@ Adding a tool is one entry in [`src/config/tools.ts`](src/config/tools.ts).
 
 | Variable | Where | Purpose |
 |---|---|---|
-| `SITE_URL` | build environment | Production origin, e.g. `https://gpstools.example`. Used for canonical URLs, hreflang, `sitemap-index.xml` and `robots.txt`. Falls back to `https://example.com`. |
+| `SITE_URL` | build environment | Production origin, e.g. `https://gpstools.example`. Used for canonical URLs, hreflang, `sitemap-index.xml` and `robots.txt`. Local builds and GitHub Actions fall back to `https://example.com`; **a Cloudflare build fails without it**, because such a deploy looks fine while every SEO URL points at the placeholder. |
 
 The site name lives in `src/config/site.ts`.
 
@@ -38,7 +38,7 @@ other branches get preview URLs.
 | Deploy command | `npx wrangler deploy` |
 | Non-production deploy command | `npx wrangler versions upload` |
 | Root directory | `/` |
-| Build variable | `SITE_URL` = production origin |
+| Build variable | `SITE_URL` = production origin — under Settings → Build → *Build variables and secrets*, not the runtime *Variables and Secrets* |
 
 `wrangler.jsonc` points Cloudflare at `./dist`; `public/_headers` sets security and cache headers.
 Manual deploy from a machine logged in with `npx wrangler login`:

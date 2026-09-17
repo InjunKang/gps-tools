@@ -46,7 +46,11 @@ deployed to Cloudflare as static assets.
 - A one-point track segment cannot be a GeoJSON line and is dropped. This is documented in the FAQ.
 - Conversion always runs in `src/workers/convert.worker.ts`. The worker (and the parser bundle)
   is created lazily on first file selection, never on page load.
-- Site name and URL live only in `src/config/site.ts`.
+- Site name and URL live only in `src/config/site.ts`. The URL comes from the `SITE_URL` build
+  variable via `resolveSiteUrl()`, which fails the build on Cloudflare (`WORKERS_CI` / `CF_PAGES`)
+  when it is missing. Do not weaken that to a warning: the first production deploy shipped
+  `example.com` canonicals precisely because nothing failed. Changing the domain = change
+  `SITE_URL` in Cloudflare and rebuild.
 
 ## i18n
 
