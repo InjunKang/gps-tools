@@ -39,6 +39,11 @@ related tools are derived from shared formats, and `@astrojs/sitemap` emits href
 - GPX → GeoJSON also keeps heart rate / cadence / temperature in `coordinateProperties`.
 - Lost: GPX sensor extensions when writing KML; KML styles; polygons become tracks in GPX.
 - A track segment with a single point is dropped (not a valid GeoJSON line).
+- GPX → CSV: one row per point (`type,name,description,segment,latitude,longitude,elevation,time`),
+  sensor columns only when present, RFC 4180 quoting, CRLF, UTF-8 BOM for Excel, and a leading
+  apostrophe on text cells that a spreadsheet would run as a formula.
+- KML → GeoJSON: styles become simplestyle properties, ExtendedData becomes properties; ground
+  overlays and network links survive only as an outline polygon plus their URL.
 
 ## Not in v1
 

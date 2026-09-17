@@ -35,7 +35,7 @@ export const ui: Record<Locale, UiStrings> = {
   en: {
     homeTitle: 'Private GPS File Converters',
     homeDescription:
-      'Free GPS file tools that run entirely in your browser. Convert GPX, KML and GeoJSON without uploading anything.',
+      'Free GPS file tools that run entirely in your browser. Convert between GPX, KML, GeoJSON and CSV without uploading anything.',
     homeHeading: 'GPS file tools that never upload your files',
     allTools: 'All tools',
     privacyBadge: 'Your file never leaves your browser',
@@ -72,7 +72,7 @@ export const ui: Record<Locale, UiStrings> = {
   de: {
     homeTitle: 'Private GPS-Dateikonverter',
     homeDescription:
-      'Kostenlose GPS-Dateitools, die vollständig in Ihrem Browser laufen. GPX, KML und GeoJSON umwandeln, ohne etwas hochzuladen.',
+      'Kostenlose GPS-Dateitools, die vollständig in Ihrem Browser laufen. GPX, KML, GeoJSON und CSV umwandeln, ohne etwas hochzuladen.',
     homeHeading: 'GPS-Dateitools, die Ihre Dateien nie hochladen',
     allTools: 'Alle Tools',
     privacyBadge: 'Ihre Datei verlässt nie den Browser',
@@ -109,7 +109,7 @@ export const ui: Record<Locale, UiStrings> = {
   ja: {
     homeTitle: 'プライバシー重視のGPSファイル変換ツール',
     homeDescription:
-      'すべてブラウザ内で動作する無料のGPSファイルツール。GPX、KML、GeoJSONをアップロードなしで変換できます。',
+      'すべてブラウザ内で動作する無料のGPSファイルツール。GPX、KML、GeoJSON、CSVをアップロードなしで変換できます。',
     homeHeading: 'ファイルをアップロードしないGPSファイルツール',
     allTools: 'すべてのツール',
     privacyBadge: 'ファイルがブラウザの外に出ることはありません',
@@ -146,7 +146,7 @@ export const ui: Record<Locale, UiStrings> = {
   es: {
     homeTitle: 'Conversores privados de archivos GPS',
     homeDescription:
-      'Herramientas gratuitas para archivos GPS que funcionan por completo en tu navegador. Convierte GPX, KML y GeoJSON sin subir nada.',
+      'Herramientas gratuitas para archivos GPS que funcionan por completo en tu navegador. Convierte entre GPX, KML, GeoJSON y CSV sin subir nada.',
     homeHeading: 'Herramientas GPS que nunca suben tus archivos',
     allTools: 'Todas las herramientas',
     privacyBadge: 'Tu archivo nunca sale de tu navegador',

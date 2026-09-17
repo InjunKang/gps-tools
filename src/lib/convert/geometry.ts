@@ -20,22 +20,29 @@ export function describeFeature(feature: Feature) {
 }
 
 /**
- * Per-point timestamps for each line segment, as produced by togeojson in
- * `coordinateProperties.times`. A segment gets `undefined` unless every point has a time,
- * because both `gx:Track` and our GPX output need all-or-nothing.
+ * Per-point values (`times`, `heart`, …) that togeojson stores in `coordinateProperties`,
+ * split per line segment. A segment gets `undefined` when the data cannot be aligned with its
+ * points: togeojson omits the `times` entry of a segment that has no timestamps, which shifts
+ * every later segment, so anything but an exact segment/length match is discarded.
+ */
+export function segmentValues(feature: Feature, key: string, segments: Position[][]): (unknown[] | undefined)[] {
+  const raw = (feature.properties?.coordinateProperties as Record<string, unknown> | undefined)?.[key];
+  const perSegment: unknown[] = Array.isArray(raw) && Array.isArray(raw[0]) ? raw : [raw];
+  const aligned = perSegment.length === segments.length;
+  return segments.map((segment, i) => {
+    const values = perSegment[i];
+    return aligned && Array.isArray(values) && values.length === segment.length ? values : undefined;
+  });
+}
+
+/**
+ * Timestamps per segment, all-or-nothing: both `gx:Track` and our GPX tracks need a time for
+ * every point of a segment or none at all.
  */
 export function segmentTimes(feature: Feature, segments: Position[][]): (string[] | undefined)[] {
-  const raw = (feature.properties?.coordinateProperties as { times?: unknown } | undefined)?.times;
-  const perSegment: unknown[] =
-    Array.isArray(raw) && Array.isArray(raw[0]) ? raw : segments.length === 1 ? [raw] : [];
-  return segments.map((segment, i) => {
-    const times = perSegment[i];
-    const complete =
-      Array.isArray(times) &&
-      times.length === segment.length &&
-      times.every((t) => typeof t === 'string' && t !== '');
-    return complete ? (times as string[]) : undefined;
-  });
+  return segmentValues(feature, 'times', segments).map((times) =>
+    times?.every((t) => typeof t === 'string' && t !== '') ? (times as string[]) : undefined,
+  );
 }
 
 /** Line segments of a line-like geometry; polygon rings count as segments. */

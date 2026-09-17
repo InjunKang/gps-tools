@@ -60,7 +60,12 @@ describe('tools config', () => {
 
   it('lists the reverse conversion first among related tools', () => {
     const gpxToKml = tools.find((t) => t.slug === 'gpx-to-kml')!;
-    expect(relatedTools(gpxToKml).map((t) => t.slug)).toEqual(['kml-to-gpx', 'gpx-to-geojson']);
+    expect(relatedTools(gpxToKml).map((t) => t.slug)).toEqual([
+      'kml-to-gpx', // exact reverse
+      'gpx-to-geojson', // same input format
+      'gpx-to-csv',
+      'kml-to-geojson', // reads what this tool writes
+    ]);
   });
 });
 

@@ -15,3 +15,5 @@ Real-world GPX/KML samples copied unmodified from the test suite of
 | `gxmultitrack.kml` | `gx:MultiTrack` |
 | `linestring.kml`, `point.kml`, `polygon.kml`, `multigeometry.kml` | Basic KML geometries |
 | `cdata.kml` | CDATA description |
+| `extended_data.kml` | `ExtendedData` fields → properties |
+| `ground_overlay.kml`, `networklink.kml` | Non-placemark features: outline + URL only |

@@ -91,5 +91,6 @@ explanations → FAQ → related tools.
 - TypeScript strict; no `any` in `src/lib`.
 - Coordinates: GeoJSON order `[lon, lat, ele?]` internally; be explicit at every format boundary.
 - Escape all user-derived text written into XML (`src/lib/convert/xml.ts`).
+- Text cells written to CSV go through the formula guard in `writers/csv.ts`; numbers we generate do not.
 - User-facing errors are translated keys, not raw exception text.
 - Do not run `wrangler deploy` or anything else outward-facing without being asked.

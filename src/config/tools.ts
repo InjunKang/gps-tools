@@ -66,6 +66,17 @@ export const formats: Record<FormatId, FormatDef> = {
       es: 'GeoJSON (RFC 7946) es el formato JSON para datos geográficos que usan los mapas web y el software SIG como Leaflet, Mapbox, QGIS y PostGIS. Las coordenadas se guardan como longitud, latitud y altitud.',
     },
   },
+  csv: {
+    label: 'CSV',
+    extension: 'csv',
+    mime: 'text/csv',
+    about: {
+      en: 'CSV (comma-separated values) is the plain-text table format that Excel, Google Sheets, LibreOffice, R and pandas all read. It has no notion of geometry, so GPS data is written as one row per point with latitude and longitude columns.',
+      de: 'CSV (Comma-Separated Values) ist das Tabellenformat in Klartext, das Excel, Google Sheets, LibreOffice, R und pandas lesen. Es kennt keine Geometrien, daher werden GPS-Daten als eine Zeile pro Punkt mit Spalten für Breiten- und Längengrad geschrieben.',
+      ja: 'CSV(カンマ区切り値)は、Excel、Googleスプレッドシート、LibreOffice、R、pandasなどで読み込めるプレーンテキストの表形式です。ジオメトリの概念がないため、GPSデータは緯度・経度の列を持つ1点1行の形式で出力されます。',
+      es: 'CSV (valores separados por comas) es el formato de tabla en texto plano que leen Excel, Google Sheets, LibreOffice, R y pandas. No tiene noción de geometría, así que los datos GPS se escriben como una fila por punto con columnas de latitud y longitud.',
+    },
+  },
 };
 
 /** Appended to the FAQ of every tool. */
@@ -357,6 +368,172 @@ export const tools: ToolDef[] = [
           {
             q: '¿Qué sistema de referencia de coordenadas se usa?',
             a: 'WGS 84 (EPSG:4326), el sistema en el que están definidos tanto GPX como GeoJSON. No se reproyecta nada ni se redondean las coordenadas.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'gpx-to-csv',
+    from: 'gpx',
+    to: 'csv',
+    i18n: {
+      en: {
+        title: 'GPX to CSV Converter',
+        description:
+          'Convert GPX tracks, routes and waypoints to a CSV spreadsheet for Excel, Google Sheets or Python. One row per point, and your file never leaves your browser.',
+        faq: [
+          {
+            q: 'Which columns does the CSV contain?',
+            a: 'One row per point with type (waypoint, route or track), name, description, segment, latitude, longitude, elevation and time. If the GPX file contains sensor data, heart_rate, cadence, temperature and power columns are added. Descriptions are written on waypoint rows only.',
+          },
+          {
+            q: 'How are tracks with several segments handled?',
+            a: 'Points stay in their recorded order, and the segment column numbers the segments of each track from 1, so pauses and gaps in a recording remain visible.',
+          },
+          {
+            q: 'Will it open correctly in Excel?',
+            a: 'Yes. The file is UTF-8 with a byte order mark, so Excel shows accented and Japanese names correctly. Times are ISO 8601 in UTC. Text starting with =, +, - or @ is prefixed with an apostrophe so a spreadsheet cannot run it as a formula.',
+          },
+        ],
+      },
+      de: {
+        title: 'GPX in CSV umwandeln',
+        description:
+          'GPX-Tracks, Routen und Wegpunkte in eine CSV-Tabelle für Excel, Google Sheets oder Python umwandeln. Eine Zeile pro Punkt – und Ihre Datei verlässt nie den Browser.',
+        faq: [
+          {
+            q: 'Welche Spalten enthält die CSV-Datei?',
+            a: 'Eine Zeile pro Punkt mit type (waypoint, route oder track), name, description, segment, latitude, longitude, elevation und time. Enthält die GPX-Datei Sensordaten, kommen die Spalten heart_rate, cadence, temperature und power hinzu. Beschreibungen stehen nur in Wegpunkt-Zeilen.',
+          },
+          {
+            q: 'Wie werden Tracks mit mehreren Segmenten behandelt?',
+            a: 'Die Punkte bleiben in der aufgezeichneten Reihenfolge, und die Spalte segment nummeriert die Segmente jedes Tracks ab 1. Pausen und Lücken in der Aufzeichnung bleiben so erkennbar.',
+          },
+          {
+            q: 'Lässt sich die Datei korrekt in Excel öffnen?',
+            a: 'Ja. Die Datei ist UTF-8 mit Byte Order Mark, sodass Excel Umlaute und japanische Namen richtig anzeigt. Zeiten stehen im ISO-8601-Format in UTC. Text, der mit =, +, - oder @ beginnt, erhält ein vorangestelltes Apostroph, damit eine Tabellenkalkulation ihn nicht als Formel ausführt.',
+          },
+        ],
+      },
+      ja: {
+        title: 'GPX CSV 変換ツール',
+        description:
+          'GPXのトラック、ルート、ウェイポイントを、ExcelやGoogleスプレッドシート、Pythonで使えるCSVに変換します。1点につき1行で出力し、ファイルがブラウザの外に出ることはありません。',
+        faq: [
+          {
+            q: 'CSVにはどの列が含まれますか?',
+            a: '1点につき1行で、type(waypoint、route、track)、name、description、segment、latitude、longitude、elevation、timeの各列が出力されます。GPXにセンサーデータがある場合は、heart_rate、cadence、temperature、powerの列が追加されます。descriptionはウェイポイントの行にのみ出力されます。',
+          },
+          {
+            q: '複数セグメントのトラックはどう扱われますか?',
+            a: 'ポイントは記録された順序のまま出力され、segment列にトラックごとに1から始まるセグメント番号が入ります。記録の一時停止や途切れもそのまま確認できます。',
+          },
+          {
+            q: 'Excelで正しく開けますか?',
+            a: 'はい。BOM付きのUTF-8で出力するため、Excelでも日本語やアクセント付きの名前が文字化けしません。時刻はISO 8601形式のUTCです。=、+、-、@で始まるテキストは、表計算ソフトで数式として実行されないよう先頭にアポストロフィを付けます。',
+          },
+        ],
+      },
+      es: {
+        title: 'Convertir GPX a CSV',
+        description:
+          'Convierte tracks, rutas y waypoints GPX a una hoja CSV para Excel, Google Sheets o Python. Una fila por punto, y tu archivo nunca sale de tu navegador.',
+        faq: [
+          {
+            q: '¿Qué columnas contiene el CSV?',
+            a: 'Una fila por punto con type (waypoint, route o track), name, description, segment, latitude, longitude, elevation y time. Si el archivo GPX incluye datos de sensores, se añaden las columnas heart_rate, cadence, temperature y power. Las descripciones solo se escriben en las filas de waypoints.',
+          },
+          {
+            q: '¿Cómo se tratan los tracks con varios segmentos?',
+            a: 'Los puntos conservan el orden en que se grabaron y la columna segment numera los segmentos de cada track desde 1, de modo que las pausas y los cortes de la grabación siguen siendo visibles.',
+          },
+          {
+            q: '¿Se abrirá correctamente en Excel?',
+            a: 'Sí. El archivo es UTF-8 con marca de orden de bytes, así que Excel muestra bien los nombres con acentos o en japonés. Las horas están en ISO 8601 y UTC. El texto que empieza por =, +, - o @ lleva un apóstrofo delante para que la hoja de cálculo no lo ejecute como fórmula.',
+          },
+        ],
+      },
+    },
+  },
+  {
+    slug: 'kml-to-geojson',
+    from: 'kml',
+    to: 'geojson',
+    i18n: {
+      en: {
+        title: 'KML to GeoJSON Converter',
+        description:
+          'Convert KML from Google Earth or Google My Maps to GeoJSON for Leaflet, Mapbox, QGIS and PostGIS. Free, instant, and private — nothing is uploaded.',
+        faq: [
+          {
+            q: 'How are KML geometries mapped to GeoJSON?',
+            a: 'Points, LineStrings and Polygons (including holes) keep their type. A gx:Track becomes a LineString and a gx:MultiTrack a MultiLineString, with timestamps in properties.coordinateProperties.times. A MultiGeometry of mixed types becomes a GeometryCollection.',
+          },
+          {
+            q: 'What happens to names, descriptions and styles?',
+            a: 'Name, description, timestamps and ExtendedData fields become feature properties. Line and fill styles are written as simplestyle properties such as stroke, stroke-width, fill and fill-opacity, which geojson.io, Mapbox and GitHub understand.',
+          },
+          {
+            q: 'What is not converted?',
+            a: 'Network links are not followed, because this page cannot download anything; only their region outline and URL are kept. A ground overlay becomes a polygon of its footprint with the image URL in the icon property, but the image itself is not included. 3D models and tours are skipped. KMZ files must be unzipped first: rename to .zip, extract, and convert the doc.kml inside.',
+          },
+        ],
+      },
+      de: {
+        title: 'KML in GeoJSON umwandeln',
+        description:
+          'KML aus Google Earth oder Google My Maps in GeoJSON für Leaflet, Mapbox, QGIS und PostGIS umwandeln. Kostenlos, sofort und privat – nichts wird hochgeladen.',
+        faq: [
+          {
+            q: 'Wie werden KML-Geometrien in GeoJSON abgebildet?',
+            a: 'Punkte, LineStrings und Polygone (auch mit Löchern) behalten ihren Typ. Ein gx:Track wird zu einem LineString und ein gx:MultiTrack zu einem MultiLineString, mit Zeitstempeln in properties.coordinateProperties.times. Eine MultiGeometry mit gemischten Typen wird zu einer GeometryCollection.',
+          },
+          {
+            q: 'Was passiert mit Namen, Beschreibungen und Stilen?',
+            a: 'Name, Beschreibung, Zeitstempel und ExtendedData-Felder werden zu Feature-Properties. Linien- und Füllstile werden als simplestyle-Properties wie stroke, stroke-width, fill und fill-opacity geschrieben, die geojson.io, Mapbox und GitHub verstehen.',
+          },
+          {
+            q: 'Was wird nicht umgewandelt?',
+            a: 'Netzwerklinks werden nicht verfolgt, da diese Seite nichts herunterladen kann; nur ihr Regionsumriss und ihre URL bleiben erhalten. Ein Boden-Overlay wird zu einem Polygon seiner Grundfläche mit der Bild-URL in der Property icon, das Bild selbst ist nicht enthalten. 3D-Modelle und Touren werden übersprungen. KMZ-Dateien müssen zuerst entpackt werden: in .zip umbenennen, entpacken und die enthaltene doc.kml umwandeln.',
+          },
+        ],
+      },
+      ja: {
+        title: 'KML GeoJSON 変換ツール',
+        description:
+          'Google EarthやGoogleマイマップのKMLを、Leaflet、Mapbox、QGIS、PostGISで使えるGeoJSONに変換します。無料・即時変換で、ファイルはどこにもアップロードされません。',
+        faq: [
+          {
+            q: 'KMLのジオメトリはGeoJSONでどう表現されますか?',
+            a: 'Point、LineString、Polygon(穴を含む)はそのままの型で出力されます。gx:TrackはLineString、gx:MultiTrackはMultiLineStringになり、タイムスタンプはproperties.coordinateProperties.timesに入ります。型が混在するMultiGeometryはGeometryCollectionになります。',
+          },
+          {
+            q: '名前、説明、スタイルはどうなりますか?',
+            a: '名前、説明、タイムスタンプ、ExtendedDataの各フィールドはフィーチャーのpropertiesになります。線や塗りのスタイルは、stroke、stroke-width、fill、fill-opacityなどのsimplestyleプロパティとして出力され、geojson.io、Mapbox、GitHubで表示に反映されます。',
+          },
+          {
+            q: '変換されないものはありますか?',
+            a: 'このページは外部からデータを取得できないため、ネットワークリンクは読み込まれず、領域の輪郭とURLのみが保持されます。地面オーバーレイは表示範囲のポリゴンになり、画像のURLがiconプロパティに入りますが、画像そのものは含まれません。3Dモデルとツアーはスキップされます。KMZファイルは先に展開が必要です。拡張子を.zipに変更して展開し、中のdoc.kmlを変換してください。',
+          },
+        ],
+      },
+      es: {
+        title: 'Convertir KML a GeoJSON',
+        description:
+          'Convierte KML de Google Earth o Google My Maps a GeoJSON para Leaflet, Mapbox, QGIS y PostGIS. Gratis, al instante y privado: no se sube nada.',
+        faq: [
+          {
+            q: '¿Cómo se representan las geometrías KML en GeoJSON?',
+            a: 'Los puntos, LineString y polígonos (con sus huecos) conservan su tipo. Un gx:Track pasa a ser un LineString y un gx:MultiTrack un MultiLineString, con las marcas de tiempo en properties.coordinateProperties.times. Una MultiGeometry de tipos mixtos se convierte en una GeometryCollection.',
+          },
+          {
+            q: '¿Qué ocurre con los nombres, las descripciones y los estilos?',
+            a: 'El nombre, la descripción, las marcas de tiempo y los campos ExtendedData pasan a ser propiedades de la entidad. Los estilos de línea y relleno se escriben como propiedades simplestyle (stroke, stroke-width, fill, fill-opacity), que entienden geojson.io, Mapbox y GitHub.',
+          },
+          {
+            q: '¿Qué no se convierte?',
+            a: 'Los enlaces de red no se siguen, porque esta página no puede descargar nada; solo se conservan el contorno de su región y su URL. Una superposición de imagen se convierte en un polígono de su huella con la URL de la imagen en la propiedad icon, pero la imagen no se incluye. Los modelos 3D y los recorridos se omiten. Los archivos KMZ deben descomprimirse antes: cambia la extensión a .zip, extrae y convierte el doc.kml que contiene.',
           },
         ],
       },

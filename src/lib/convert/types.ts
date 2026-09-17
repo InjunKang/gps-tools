@@ -1,6 +1,6 @@
 import type { FeatureCollection } from 'geojson';
 
-export type FormatId = 'gpx' | 'kml' | 'geojson';
+export type FormatId = 'gpx' | 'kml' | 'geojson' | 'csv';
 
 export type Reader = (text: string) => FeatureCollection;
 export type Writer = (fc: FeatureCollection) => string;

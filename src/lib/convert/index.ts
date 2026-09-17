@@ -2,6 +2,7 @@ import { countPoints } from './geometry';
 import { readGpx } from './readers/gpx';
 import { readKml } from './readers/kml';
 import { ConvertError, type ConvertResult, type FormatId, type Reader, type Writer } from './types';
+import { writeCsv } from './writers/csv';
 import { writeGeojson } from './writers/geojson';
 import { writeGpx } from './writers/gpx';
 import { writeKml } from './writers/kml';
@@ -11,7 +12,12 @@ export type { ConvertErrorCode, ConvertResult, ConvertStats, FormatId } from './
 
 // GeoJSON is the pivot: a new format needs one reader and/or one writer, never a pair converter.
 export const readers: Partial<Record<FormatId, Reader>> = { gpx: readGpx, kml: readKml };
-export const writers: Partial<Record<FormatId, Writer>> = { gpx: writeGpx, kml: writeKml, geojson: writeGeojson };
+export const writers: Partial<Record<FormatId, Writer>> = {
+  gpx: writeGpx,
+  kml: writeKml,
+  geojson: writeGeojson,
+  csv: writeCsv,
+};
 
 export function convert(input: string, from: FormatId, to: FormatId): ConvertResult {
   const read = readers[from];
