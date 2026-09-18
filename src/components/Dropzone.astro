@@ -22,6 +22,9 @@ const messages = {
 };
 ---
 
+<!-- Classic, ES5, loaded before the module script: if that script fails to even parse on an old
+     browser, this still turns the failure into a visible message instead of a dead page. -->
+<script is:inline defer src="/error-guard.js"></script>
 <section
   class="dropzone"
   data-dropzone
@@ -58,6 +61,7 @@ const messages = {
 
   <div class="pane" data-pane="error" hidden>
     <p class="prompt error" data-error></p>
+    <p class="hint" data-error-detail></p>
     <button class="button primary" type="button" data-reset>{t.tryAgain}</button>
   </div>
 
@@ -101,9 +105,10 @@ const messages = {
       });
     };
 
-    const fail = (code: string) => {
+    const fail = (code: string, detail = '') => {
       const text = messages.errors[code] ?? messages.errors.unknown;
       $('[data-error]').textContent = text;
+      $('[data-error-detail]').textContent = detail;
       live.textContent = text;
       show('error');
       zone.querySelector<HTMLElement>('[data-pane="error"] [data-reset]')?.focus();
@@ -124,7 +129,7 @@ const messages = {
 
       // The worker (and the XML parser it bundles) is only downloaded once a file is chosen.
       worker ??= new Worker(new URL('../workers/convert.worker.ts', import.meta.url), { type: 'module' });
-      worker.onerror = () => fail('unknown');
+      worker.onerror = (event) => fail('unknown', event.message);
       worker.onmessage = ({ data }: MessageEvent<ConvertResponse>) => {
         if (!data.ok) return fail(data.code);
         objectUrl = URL.createObjectURL(data.blob);

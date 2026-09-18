@@ -11,9 +11,10 @@ const TRACK_POINT_EXTENSION =
 function normalizeExtensionPrefix(text: string): string {
   const prefix = TRACK_POINT_EXTENSION.exec(text.slice(0, 8192))?.[1];
   if (!prefix || prefix === 'gpxtpx') return text;
+  // split/join rather than replaceAll: Safari < 13.1 has no replaceAll.
   return text
-    .replaceAll(`<${prefix}:`, '<gpxtpx:')
-    .replaceAll(`</${prefix}:`, '</gpxtpx:')
+    .split(`<${prefix}:`).join('<gpxtpx:')
+    .split(`</${prefix}:`).join('</gpxtpx:')
     .replace(`xmlns:${prefix}=`, 'xmlns:gpxtpx=');
 }
 

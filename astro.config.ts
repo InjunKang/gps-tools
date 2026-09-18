@@ -7,6 +7,12 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   build: { format: 'directory', inlineStylesheets: 'always' },
+  vite: {
+    // Lower modern syntax (??=, ?., ||=) for older iPhones: on iOS 13 the untranspiled dropzone
+    // script was a syntax error, so picking a file silently did nothing. APIs are not polyfilled
+    // by this, so src/ avoids anything newer than Safari 13 (see tests/build-output.test.ts).
+    build: { target: ['safari13', 'chrome80', 'firefox72'] },
+  },
   i18n: {
     defaultLocale: DEFAULT_LOCALE,
     locales: [...LOCALES],

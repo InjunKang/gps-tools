@@ -71,6 +71,34 @@ describe.skipIf(!existsSync(dist))('build output', () => {
     }
   });
 
+  // An iPhone on iOS 13 showed nothing at all after picking a file: `??=` in the page script
+  // was a syntax error, so no handler was ever registered. Every shipped script must parse on
+  // Safari 13 (the build target); APIs missing there are covered by the reader tests.
+  it('ships no syntax newer than Safari 13 in any script', () => {
+    const scripts = [
+      ...pages.flatMap((p) => [...p.html.matchAll(/<script(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g)].map((m) => [p.path, m[1]])),
+      ...readdirSync(join(dist, '_astro'))
+        .filter((f) => f.endsWith('.js'))
+        .map((f) => [`_astro/${f}`, readFileSync(join(dist, '_astro', f), 'utf8')]),
+      ['error-guard.js', readFileSync(join(dist, 'error-guard.js'), 'utf8')],
+    ];
+    expect(scripts.length).toBeGreaterThan(2);
+    for (const [name, code] of scripts) {
+      for (const token of ['??=', '||=', '&&=', '?.', 'replaceAll(', 'URL.canParse', '.at(']) {
+        expect(code.includes(token), `${token} in ${name}`).toBe(false);
+      }
+    }
+  });
+
+  it('loads the error guard before the dropzone script on tool pages', () => {
+    for (const { path, html } of toolPages) {
+      const guard = html.indexOf('src="/error-guard.js"');
+      expect(guard, path).toBeGreaterThan(0);
+      expect(guard, path).toBeLessThan(html.indexOf('<script type="module"'));
+      expect(html, path).toContain('data-error-detail');
+    }
+  });
+
   it('lists every page with its alternates in the sitemap', () => {
     const sitemap = readFileSync(join(dist, 'sitemap-0.xml'), 'utf8');
     expect(sitemap.match(/<url>/g)).toHaveLength((tools.length + 1) * LOCALES.length);
