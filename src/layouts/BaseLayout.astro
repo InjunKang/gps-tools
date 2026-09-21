@@ -16,6 +16,9 @@ interface Props {
 
 const { locale, slug, title, description, faq } = Astro.props;
 const t = ui[locale];
+// /error-guard.js in <head>: a classic ES5 script, deferred, so it runs before any bundled module
+// script. If the dropzone bundle fails to even parse on an old browser, it still shows a visible
+// error. Keep it in <head>, and keep <head> free of comments/text (see tests/build-output.test.ts).
 ---
 
 <!doctype html>
@@ -25,6 +28,7 @@ const t = ui[locale];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline defer src="/error-guard.js"></script>
     <SeoHead locale={locale} slug={slug} title={title} description={description} faq={faq} />
   </head>
   <body>

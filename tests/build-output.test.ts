@@ -90,11 +90,14 @@ describe.skipIf(!existsSync(dist))('build output', () => {
     }
   });
 
-  it('loads the error guard before the dropzone script on tool pages', () => {
+  it('loads the error guard before any bundled script on tool pages', () => {
     for (const { path, html } of toolPages) {
       const guard = html.indexOf('src="/error-guard.js"');
       expect(guard, path).toBeGreaterThan(0);
+      // Before the first module script anywhere in the page, not just the dropzone's: Astro may
+      // hoist bundled scripts to wherever the first component script appears (e.g. the header).
       expect(guard, path).toBeLessThan(html.indexOf('<script type="module"'));
+      expect(guard, path).toBeLessThan(html.indexOf('</head>'));
       expect(html, path).toContain('data-error-detail');
     }
   });
