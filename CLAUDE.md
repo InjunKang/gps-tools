@@ -83,7 +83,9 @@ explanations → FAQ → related tools.
 
 - Shipped scripts must parse on Safari 13 (`vite.build.target` in `astro.config.ts`; guarded by
   `tests/build-output.test.ts`). The target only lowers syntax: do not use APIs newer than Safari 13
-  in client or worker code (`replaceAll`, `URL.canParse`, `Array.prototype.at`, …).
+  in client or worker code (`replaceAll`, `URL.canParse`, `Array.prototype.at`, `Blob.arrayBuffer()` /
+  `Blob.text()` — use `src/workers/read-bytes.ts`, …). Worker exceptions travel back as
+  `{ code: 'unknown', detail }` so the raw message is visible on the device that failed.
 - `public/error-guard.js` (plain ES5, deferred from `<head>` in BaseLayout so it runs before any
   bundled script) turns any uncaught error,
   including a SyntaxError in the bundle, into a visible message. Keep it ES5 and dependency-free.

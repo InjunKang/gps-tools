@@ -128,7 +128,7 @@ const messages = {
       worker ??= new Worker(new URL('../workers/convert.worker.ts', import.meta.url), { type: 'module' });
       worker.onerror = (event) => fail('unknown', event.message);
       worker.onmessage = ({ data }: MessageEvent<ConvertResponse>) => {
-        if (!data.ok) return fail(data.code);
+        if (!data.ok) return fail(data.code, data.detail ?? '');
         objectUrl = URL.createObjectURL(data.blob);
         const name = `${file.name.replace(/\.[^.]+$/, '')}.${ext}`;
         download.href = objectUrl;

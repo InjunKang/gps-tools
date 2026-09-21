@@ -9,4 +9,5 @@ export interface ConvertRequest {
 
 export type ConvertResponse =
   | { ok: true; blob: Blob; stats: ConvertStats }
-  | { ok: false; code: ConvertErrorCode | 'unknown' };
+  /** `detail` is the raw exception message for 'unknown', shown small under the translated text. */
+  | { ok: false; code: ConvertErrorCode | 'unknown'; detail?: string };
