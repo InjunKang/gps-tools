@@ -6,6 +6,8 @@ product's core promise. Every rule below that mentions privacy is non-negotiable
 Stack: Astro (static output) + TypeScript (strict), vanilla TS on the client, Vitest,
 deployed to Cloudflare as static assets.
 
+Current status, open items and dashboard-only settings: `docs/HANDOFF.md`. Read it when resuming work.
+
 ## Commands
 
 - `npm run dev` — dev server

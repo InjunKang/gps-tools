@@ -23,7 +23,8 @@ GPX, `coordinateProperties` in GeoJSON), and feature attributes (`ExtendedData` 
 Tested against real exports from Strava, Garmin Connect, Komoot, Google Earth and QGIS.
 
 Astro (static build) + TypeScript, deployed to Cloudflare as static assets.
-Project rules are in [`CLAUDE.md`](CLAUDE.md), design notes in [`docs/design.md`](docs/design.md).
+Project rules are in [`CLAUDE.md`](CLAUDE.md), design notes in [`docs/design.md`](docs/design.md),
+current status and next steps in [`docs/HANDOFF.md`](docs/HANDOFF.md) (Korean).
 
 ## Develop
 
