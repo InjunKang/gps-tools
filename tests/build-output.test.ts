@@ -102,6 +102,14 @@ describe.skipIf(!existsSync(dist))('build output', () => {
     }
   });
 
+  // The Share button carried the hidden attribute and was still visible everywhere, because
+  // .button sets display. Anything toggled with `hidden` relies on this rule.
+  it('makes the hidden attribute win over component display rules', () => {
+    for (const { path, html } of toolPages) {
+      expect(html.replace(/\s+/g, ''), path).toContain('[hidden]{display:none!important}');
+    }
+  });
+
   it('lists every page with its alternates in the sitemap', () => {
     const sitemap = readFileSync(join(dist, 'sitemap-0.xml'), 'utf8');
     expect(sitemap.match(/<url>/g)).toHaveLength((tools.length + 1) * LOCALES.length);

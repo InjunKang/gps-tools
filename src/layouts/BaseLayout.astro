@@ -85,6 +85,11 @@ const t = ui[locale];
   html {
     -webkit-text-size-adjust: 100%;
   }
+  /* `hidden` must win over component display rules (.button is inline-flex): the Share button
+     was set hidden by script and still showed on every desktop. */
+  [hidden] {
+    display: none !important;
+  }
   /* Korean breaks lines at spaces, not inside words. */
   html[lang='ko'] {
     word-break: keep-all;
