@@ -1,9 +1,24 @@
 # GPXKit
 
-https://gpxkit.com
+**Free GPS file converters that run entirely in your browser: [gpxkit.com](https://gpxkit.com)**
 
-Browser-only GPS file converters (GPX, KML, GeoJSON, CSV). Files are converted in a Web Worker
-and never leave the user's browser; a `connect-src 'self'` Content Security Policy enforces that.
+Convert between GPX, KML, GeoJSON and CSV. Files are parsed and converted in a Web Worker on
+your own device and are never uploaded — this repository is public so anyone can verify that.
+A `connect-src 'self'` Content Security Policy makes it impossible for the page to send data anywhere.
+
+| Tool | |
+|---|---|
+| [GPX → KML](https://gpxkit.com/gpx-to-kml/) | [KML → GPX](https://gpxkit.com/kml-to-gpx/) |
+| [GPX → GeoJSON](https://gpxkit.com/gpx-to-geojson/) | [GeoJSON → GPX](https://gpxkit.com/geojson-to-gpx/) |
+| [KML → GeoJSON](https://gpxkit.com/kml-to-geojson/) | [GeoJSON → KML](https://gpxkit.com/geojson-to-kml/) |
+| [GPX → CSV](https://gpxkit.com/gpx-to-csv/) | |
+
+Also in [Deutsch](https://gpxkit.com/de/), [日本語](https://gpxkit.com/ja/) and [Español](https://gpxkit.com/es/).
+
+What survives a conversion: waypoints, routes, multi-segment tracks, elevation, timestamps
+(`gx:Track` in KML), heart rate / cadence / temperature / power (Garmin `TrackPointExtension` in
+GPX, `coordinateProperties` in GeoJSON), and feature attributes (`ExtendedData` in KML).
+Tested against real exports from Strava, Garmin Connect, Komoot, Google Earth and QGIS.
 
 Astro (static build) + TypeScript, deployed to Cloudflare as static assets.
 Project rules are in [`CLAUDE.md`](CLAUDE.md), design notes in [`docs/design.md`](docs/design.md).
@@ -55,7 +70,8 @@ SITE_URL=https://gpxkit.com npm run deploy
 
 GitHub Actions (`.github/workflows/ci.yml`) runs `npm run verify` on every push and pull request.
 
-## Test fixtures
 
-`tests/fixtures/` contains sample files from placemark/togeojson (BSD 2-Clause, see
-`tests/fixtures/LICENSE-togeojson`).
+## License
+
+[MIT](LICENSE). Sample files in `tests/fixtures/` and `public/samples/` are from
+placemark/togeojson (BSD 2-Clause).
