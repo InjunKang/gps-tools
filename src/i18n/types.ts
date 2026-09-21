@@ -20,6 +20,10 @@ export interface UiStrings {
   /** `{features}` and `{points}` are numbers. */
   stats: string;
   download: string;
+  /** Web Share button (phones): sends the converted file to another app with its name intact. */
+  share: string;
+  /** Shown on browsers that save blob downloads as "unknown" (Safari 13). `{name}` is the file name. */
+  renameHint: string;
   convertAnother: string;
   tryAgain: string;
   errors: Record<UiErrorCode, string>;

@@ -14,6 +14,8 @@ export const pack: LocalePack = {
     done: "Tu archivo {to} está listo",
     stats: "Elementos: {features} · Puntos: {points}",
     download: "Descargar {to}",
+    share: 'Compartir…',
+    renameHint: 'Si el archivo se guardó como «unknown», cámbiale el nombre a {name}.',
     convertAnother: "Convertir otro archivo",
     tryAgain: "Probar con otro archivo",
     errors: {

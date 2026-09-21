@@ -86,6 +86,9 @@ explanations → FAQ → related tools.
   in client or worker code (`replaceAll`, `URL.canParse`, `Array.prototype.at`, `Blob.arrayBuffer()` /
   `Blob.text()` — use `src/workers/read-bytes.ts`, …). Worker exceptions travel back as
   `{ code: 'unknown', detail }` so the raw message is visible on the device that failed.
+- Detect old Safari by feature, not UA (iPadOS reports itself as a Mac): Safari 13 lacks
+  `Blob.arrayBuffer()` and also saves blob downloads as "unknown", so that check drives the rename
+  hint. The Share button appears only on touch devices where `navigator.canShare({ files })` is true.
 - `public/error-guard.js` (plain ES5, deferred from `<head>` in BaseLayout so it runs before any
   bundled script) turns any uncaught error,
   including a SyntaxError in the bundle, into a visible message. Keep it ES5 and dependency-free.

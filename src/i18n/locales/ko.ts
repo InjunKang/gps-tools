@@ -14,6 +14,8 @@ export const pack: LocalePack = {
     done: '{to} 파일이 준비됐습니다',
     stats: '피처 {features}개 · 포인트 {points}개',
     download: '{to} 다운로드',
+    share: '공유…',
+    renameHint: '파일이 "unknown"으로 저장됐다면 이름을 다음과 같이 바꿔 주세요: {name}',
     convertAnother: '다른 파일 변환',
     tryAgain: '다른 파일로 다시 시도',
     errors: {

@@ -14,6 +14,8 @@ export const pack: LocalePack = {
     done: "Your {to} file is ready",
     stats: "Features: {features} · Points: {points}",
     download: "Download {to}",
+    share: 'Share…',
+    renameHint: 'If the file was saved as “unknown”, rename it to {name}.',
     convertAnother: "Convert another file",
     tryAgain: "Try another file",
     errors: {

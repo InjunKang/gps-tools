@@ -18,6 +18,7 @@ const accept = [from.extension, ...(from.alsoAccepts ?? [])].map((ext) => `.${ex
 // Everything the client script needs, already translated.
 const messages = {
   stats: t.stats,
+  renameHint: t.renameHint,
   errors: Object.fromEntries(Object.entries(t.errors).map(([code, text]) => [code, fill(text, vars)])),
 };
 ---
@@ -52,7 +53,11 @@ const messages = {
   <div class="pane" data-pane="done" hidden>
     <p class="prompt">{fill(t.done, vars)}</p>
     <p class="hint"><span data-filename></span><br /><span data-stats></span></p>
-    <a class="button primary" data-download href="#">{fill(t.download, vars)}</a>
+    <div class="actions">
+      <a class="button primary" data-download href="#">{fill(t.download, vars)}</a>
+      <button class="button secondary" type="button" data-share hidden>{t.share}</button>
+    </div>
+    <p class="hint small" data-rename-hint hidden></p>
     <button class="button link" type="button" data-reset>{t.convertAnother}</button>
   </div>
 
@@ -81,17 +86,34 @@ const messages = {
     const { from, to, mime, ext, locale } = zone.dataset as Record<string, string>;
     const messages = JSON.parse(zone.dataset.messages ?? '{}') as {
       stats: string;
+      renameHint: string;
       errors: Record<string, string>;
     };
     const $ = <T extends HTMLElement>(selector: string) => zone.querySelector<T>(selector)!;
     const input = $<HTMLInputElement>('[data-input]');
     const download = $<HTMLAnchorElement>('[data-download]');
+    const share = $<HTMLButtonElement>('[data-share]');
+    const renameHint = $('[data-rename-hint]');
     const live = $('[data-live]');
+
+    // Safari 13 saves blob downloads as "unknown", ignoring the download attribute. The same
+    // Safari generation lacks Blob.arrayBuffer(), which is a cleaner signal than the UA string
+    // (iPadOS reports itself as a Mac).
+    const savesAsUnknown = typeof Blob.prototype.arrayBuffer !== 'function';
+    const canShareFiles = (file: File): boolean => {
+      try {
+        // Touch devices only: on desktop the download button is the natural path.
+        return touch && typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] });
+      } catch {
+        return false;
+      }
+    };
 
     // iOS and Android pickers filter by system file type, and neither knows .gpx or .kml, so an
     // extension-only `accept` can leave every file greyed out. On touch devices, show all files;
     // a wrong pick still gets the translated "wrong format" error.
-    if (matchMedia('(pointer: coarse)').matches) input.removeAttribute('accept');
+    const touch = matchMedia('(pointer: coarse)').matches;
+    if (touch) input.removeAttribute('accept');
 
     let worker: Worker | undefined;
     let objectUrl: string | undefined;
@@ -133,6 +155,13 @@ const messages = {
         const name = `${file.name.replace(/\.[^.]+$/, '')}.${ext}`;
         download.href = objectUrl;
         download.download = name;
+        renameHint.hidden = !savesAsUnknown;
+        renameHint.textContent = messages.renameHint.replace('{name}', name);
+        // Web Share keeps the file name and hands the file straight to Google Earth, Komoot,
+        // Files, etc. Only shown where the browser can share files. Cancelling rejects: ignore.
+        const shared = new File([data.blob], name, { type: mime });
+        share.hidden = !canShareFiles(shared);
+        share.onclick = () => void navigator.share({ files: [shared], title: name }).catch(() => {});
         $('[data-filename]').textContent = name;
         const stats = messages.stats
           .replace('{features}', data.stats.features.toLocaleString(locale))
@@ -172,8 +201,9 @@ const messages = {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Fixed height: switching between idle / working / done / error never shifts the page. */
-    height: 21rem;
+    /* Reserved height: switching between idle / working / done / error does not shift the page.
+       min-height, not height: the rename hint on a narrow old Safari may need a few more pixels. */
+    min-height: 21rem;
     padding: 1.5rem 1rem 1rem;
     border: 2px dashed var(--border);
     border-radius: 1rem;
@@ -206,6 +236,16 @@ const messages = {
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .hint.small {
+    max-width: 24rem;
+    font-size: 0.8125rem;
   }
   .prompt {
     margin: 0;
