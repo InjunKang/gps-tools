@@ -81,6 +81,10 @@ const t = ui[locale];
   html {
     -webkit-text-size-adjust: 100%;
   }
+  /* Korean breaks lines at spaces, not inside words. */
+  html[lang='ko'] {
+    word-break: keep-all;
+  }
   body {
     margin: 0;
     background: var(--bg);

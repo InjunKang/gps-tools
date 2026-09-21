@@ -32,7 +32,8 @@ describe('tools config', () => {
         expect(copy.title.trim()).not.toBe('');
         // Search engines truncate long descriptions.
         expect(copy.description.length).toBeGreaterThan(50);
-        expect(copy.description.length).toBeLessThanOrEqual(locale === 'ja' ? 120 : 200);
+        // CJK scripts carry more per character; keep those descriptions shorter.
+        expect(copy.description.length).toBeLessThanOrEqual(['ja', 'ko'].includes(locale) ? 120 : 200);
         expect(copy.faq.length).toBe(tool.i18n.en.faq.length);
         copy.faq.forEach(({ q, a }) => expect(q.trim() && a.trim()).not.toBe(''));
       }

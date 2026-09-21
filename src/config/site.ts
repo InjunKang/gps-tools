@@ -36,7 +36,7 @@ export const SITE = {
   url: resolveSiteUrl(process.env),
 } as const;
 
-export const LOCALES = ['en', 'de', 'ja', 'es'] as const;
+export const LOCALES = ['en', 'de', 'ja', 'es', 'ko', 'fr', 'it', 'pt'] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'en';
 
@@ -45,4 +45,8 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   de: 'Deutsch',
   ja: '日本語',
   es: 'Español',
+  ko: '한국어',
+  fr: 'Français',
+  it: 'Italiano',
+  pt: 'Português',
 };

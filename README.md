@@ -13,7 +13,9 @@ A `connect-src 'self'` Content Security Policy makes it impossible for the page 
 | [KML → GeoJSON](https://gpxkit.com/kml-to-geojson/) | [GeoJSON → KML](https://gpxkit.com/geojson-to-kml/) |
 | [GPX → CSV](https://gpxkit.com/gpx-to-csv/) | |
 
-Also in [Deutsch](https://gpxkit.com/de/), [日本語](https://gpxkit.com/ja/) and [Español](https://gpxkit.com/es/).
+Also in [Deutsch](https://gpxkit.com/de/), [日本語](https://gpxkit.com/ja/), [Español](https://gpxkit.com/es/),
+[한국어](https://gpxkit.com/ko/), [Français](https://gpxkit.com/fr/), [Italiano](https://gpxkit.com/it/) and
+[Português](https://gpxkit.com/pt/).
 
 What survives a conversion: waypoints, routes, multi-segment tracks, elevation, timestamps
 (`gx:Track` in KML), heart rate / cadence / temperature / power (Garmin `TrackPointExtension` in
