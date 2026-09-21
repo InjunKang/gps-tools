@@ -558,7 +558,7 @@ export const tools: ToolDef[] = [
           },
           {
             q: 'Can the GPX file contain timestamps?',
-            a: 'Plain GeoJSON has no per-point time. If the file carries times in properties.coordinateProperties.times, the layout written by this site’s GPX to GeoJSON converter, they become GPX timestamps, so a GPX → GeoJSON → GPX round trip keeps waypoints, routes, segments, elevation and time. Heart rate and other sensor values are not written to GPX.',
+            a: 'Plain GeoJSON has no per-point time. If the file carries times in properties.coordinateProperties.times, the layout written by this site’s GPX to GeoJSON converter, they become GPX timestamps, and heart rate, cadence, temperature and power in the same place become Garmin TrackPointExtension elements that Strava, Garmin Connect and Komoot read. A GPX → GeoJSON → GPX round trip therefore keeps waypoints, routes, segments, elevation, time and sensor data.',
           },
           {
             q: 'Why does it say my file does not use WGS 84?',
@@ -577,7 +577,7 @@ export const tools: ToolDef[] = [
           },
           {
             q: 'Kann die GPX-Datei Zeitstempel enthalten?',
-            a: 'Einfaches GeoJSON kennt keine Zeit pro Punkt. Enthält die Datei Zeiten in properties.coordinateProperties.times – so schreibt sie der GPX-in-GeoJSON-Konverter dieser Seite –, werden daraus GPX-Zeitstempel. Ein Durchlauf GPX → GeoJSON → GPX erhält so Wegpunkte, Routen, Segmente, Höhe und Zeit. Herzfrequenz und andere Sensorwerte werden nicht in GPX geschrieben.',
+            a: 'Einfaches GeoJSON kennt keine Zeit pro Punkt. Enthält die Datei Zeiten in properties.coordinateProperties.times – so schreibt sie der GPX-in-GeoJSON-Konverter dieser Seite –, werden daraus GPX-Zeitstempel. Herzfrequenz, Trittfrequenz, Temperatur und Leistung an derselben Stelle werden zu Garmin-TrackPointExtension-Elementen, die Strava, Garmin Connect und Komoot lesen. Ein Durchlauf GPX → GeoJSON → GPX erhält so Wegpunkte, Routen, Segmente, Höhe, Zeit und Sensordaten.',
           },
           {
             q: 'Warum heißt es, meine Datei verwende kein WGS 84?',
@@ -596,7 +596,7 @@ export const tools: ToolDef[] = [
           },
           {
             q: 'GPXにタイムスタンプを含められますか?',
-            a: '通常のGeoJSONには点ごとの時刻がありません。properties.coordinateProperties.times(このサイトのGPX→GeoJSON変換が出力する形式)に時刻が入っている場合は、GPXのタイムスタンプになります。そのためGPX→GeoJSON→GPXと往復しても、ウェイポイント、ルート、セグメント、標高、時刻が保持されます。心拍数などのセンサー値はGPXには出力されません。',
+            a: '通常のGeoJSONには点ごとの時刻がありません。properties.coordinateProperties.times(このサイトのGPX→GeoJSON変換が出力する形式)に時刻が入っている場合は、GPXのタイムスタンプになります。同じ場所にある心拍数、ケイデンス、気温、パワーは、Strava、Garmin Connect、Komootが読み取れるGarmin TrackPointExtension要素として出力されます。そのためGPX→GeoJSON→GPXと往復しても、ウェイポイント、ルート、セグメント、標高、時刻、センサー値が保持されます。',
           },
           {
             q: '「WGS 84ではありません」と表示されるのはなぜですか?',
@@ -615,7 +615,7 @@ export const tools: ToolDef[] = [
           },
           {
             q: '¿Puede el archivo GPX contener marcas de tiempo?',
-            a: 'El GeoJSON normal no tiene hora por punto. Si el archivo lleva horas en properties.coordinateProperties.times, el formato que escribe el conversor de GPX a GeoJSON de este sitio, se convierten en marcas de tiempo GPX, de modo que un ciclo GPX → GeoJSON → GPX conserva waypoints, rutas, segmentos, altitud y hora. La frecuencia cardíaca y otros valores de sensores no se escriben en GPX.',
+            a: 'El GeoJSON normal no tiene hora por punto. Si el archivo lleva horas en properties.coordinateProperties.times, el formato que escribe el conversor de GPX a GeoJSON de este sitio, se convierten en marcas de tiempo GPX, y la frecuencia cardíaca, la cadencia, la temperatura y la potencia guardadas en el mismo lugar pasan a ser elementos Garmin TrackPointExtension, que leen Strava, Garmin Connect y Komoot. Un ciclo GPX → GeoJSON → GPX conserva así waypoints, rutas, segmentos, altitud, hora y datos de sensores.',
           },
           {
             q: '¿Por qué dice que mi archivo no usa WGS 84?',

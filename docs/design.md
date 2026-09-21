@@ -49,8 +49,9 @@ related tools are derived from shared formats, and `@astrojs/sitemap` emits href
 - KML output writes every flat string / number / boolean property to `ExtendedData` (so GeoJSON
   attributes survive, and GPX fields such as `cmt` too). Skipped: nested values, nulls, keys starting
   with `_`, and togeojson's stray `gpxtpx_*` per-point readings.
-- GPX → GeoJSON → GPX round-trips waypoints, routes, segments, elevation and time. Sensor values are
-  not written back to GPX (no extension writer yet).
+- GPX → GeoJSON → GPX round-trips waypoints, routes, segments, elevation, time and sensor data: the
+  GPX writer emits `coordinateProperties` heart/cads/atemps as Garmin `gpxtpx:TrackPointExtension`
+  (v1) and powers as Strava-style `<power>`, declaring the namespace only when used.
 - KML → GeoJSON: styles become simplestyle properties, ExtendedData becomes properties; ground
   overlays and network links survive only as an outline polygon plus their URL.
 
