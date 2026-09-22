@@ -39,7 +39,7 @@
 | 번역 검수 | ko만 운영자가 검수함. de/ja/es/fr/it/pt는 미검수(기계 작성) |
 | AlternativeTo | 2026-09-21 제출, 검수 대기. 일반 대기열은 기약 없음. 유료 우선 검수는 하지 않음 |
 | 외부 링크 | 아직 없음. 후보: GitHub awesome 목록 PR(awesome-gis 등), Show HN, Reddit(r/gis, r/Garmin), Product Hunt, SaaSHub |
-| 광고 | `AdSlot`은 빈 자리만 있음. 붙이려면 CSP를 열어야 하고, FAQ의 "어디로도 보낼 수 없다" 문구를 고쳐야 함 |
+| 광고 | `AdSlot`은 빈 자리만 있음. **사람 방문이 하루 300~500명을 몇 주 유지할 때** 검토(도구 개수와 무관). 붙이려면 CSP를 열어야 하고 FAQ의 "어디로도 보낼 수 없다" 문구를 8개 언어에서 고쳐야 하며 Lighthouse가 떨어짐. 후보: 애드센스(수익 높음, 추적·쿠키 배너), EthicalAds/Carbon(추적 없음, 최소 트래픽 조건), 후원 링크(CSP 영향 없음, 지금도 가능) |
 | 분석 | Cloudflare Web Analytics(JS 비콘)는 CSP와 충돌해서 끔. 서버 측 통계(Cloudflare → Analytics & Logs → Traffic)와 서치 콘솔을 사용 |
 
 ## 4. 다음 작업 후보 (검색어 데이터를 보고 고를 것)
@@ -49,7 +49,22 @@
 - 다중 파일 일괄 변환(zip 다운로드).
 - IndexNow: 도구를 자주 추가하게 되면 Bing에 즉시 알리는 용도. 사이트 루트에 키 `.txt` 파일 필요.
 
-## 5. 리포에 없는 설정 (Cloudflare 대시보드에만 있음)
+## 5. 방문자 수 확인 방법
+
+```sh
+node scripts/traffic.mjs 7      # 최근 7일. 숫자는 일 수
+```
+
+- 이 PC에서 `npx wrangler login`이 되어 있어야 한다(2026-09-22에 로그인함). 다른 PC면 다시 로그인.
+- Cloudflare의 순 방문자(IP 수)는 **봇이 그대로 포함**된다. 새 도메인은 취약점 스캐너
+  (`/wp-login.php`, `/.env` 탐색)와 오래된 Chrome UA를 단 봇이 대부분이다.
+- 스크립트의 "human-looking"도 대략적인 추정이고 운영자·검증 접속이 포함된다.
+- **검색으로 들어온 사람 수는 서치 콘솔 → 실적 → 클릭 수가 정확하다**(봇 제외, 2~3일 지연).
+
+기준선(2026-09-17~22, 색인 첫 주): 일 요청 900~1,500, IP 100~275, 이 중 사람은 하루 0~5명으로 추정.
+광고 검토 기준(하루 300~500명)은 사람 기준이므로 Cloudflare 숫자와 직접 비교하지 말 것.
+
+## 6. 리포에 없는 설정 (Cloudflare 대시보드에만 있음)
 
 영역(zone)을 다시 만들 일이 생기면 아래를 다시 해야 한다.
 
@@ -65,7 +80,7 @@
 
 커스텀 도메인 연결, `workers.dev`·프리뷰 URL 비활성화는 `wrangler.jsonc`에 들어 있다.
 
-## 6. 작업 방법 요약
+## 7. 작업 방법 요약
 
 ```sh
 npm install
@@ -81,7 +96,7 @@ git push           # main에 push하면 자동 배포
 - **FAQ에 사실 주장을 쓰면 테스트로 뒷받침한다.** 변환 동작을 바꾸면 FAQ도 고친다.
 - 배포 확인: `gh api repos/InjunKang/gps-tools/commits/<SHA>/check-runs`로 CI와 Cloudflare 빌드 결과를 볼 수 있다.
 
-## 7. 지금까지 실제로 겪은 문제와 교훈
+## 8. 지금까지 실제로 겪은 문제와 교훈
 
 같은 실수를 반복하지 않기 위한 기록이다. 대부분 테스트로 막아 두었다.
 
@@ -103,7 +118,7 @@ git push           # main에 push하면 자동 배포
 작업 도구 관련: **Git Bash heredoc에 백슬래시가 든 내용(정규식 등)을 넣으면 백슬래시가 사라진다.**
 정규식이나 이스케이프가 든 파일은 편집 도구로 직접 수정할 것. 여러 번 같은 실수를 했다.
 
-## 8. 실제 파일 검증 자료 (로컬 전용, 리포에 없음)
+## 9. 실제 파일 검증 자료 (로컬 전용, 리포에 없음)
 
 `verification/` 폴더는 gitignore되어 있다. 내려받은 파일의 라이선스가 불분명하기 때문이다.
 
@@ -122,10 +137,10 @@ git push           # main에 push하면 자동 배포
 
 스크립트는 `http://localhost:4321`(미리보기 서버)을 대상으로 한 것이 많다. 먼저 `npm run build && npm run preview`.
 
-## 9. 외부 서비스 계정 메모
+## 10. 외부 서비스 계정 메모
 
 - GitHub: `InjunKang` (커밋 작성자도 이 이름. 과거 커밋의 이메일은 2026-09-21에 다시 써서 교체함)
-- Cloudflare: 워커 `gps-tools`, 영역 `gpxkit.com` (같은 계정에 있어야 배포가 됨)
+- Cloudflare: 워커 `gps-tools`, 영역 `gpxkit.com` (같은 계정에 있어야 배포가 됨). 이 PC에 wrangler 로그인됨(2026-09-22)
 - 구글 서치 콘솔: `gpxkit.com` 도메인 속성. 처음에 다른 구글 계정으로 연결됐다가 원하는 계정으로 다시 인증함
 - Bing 웹마스터 도구: 서치 콘솔에서 가져오기로 등록. 사이트맵 표시가 "URL 1개"인 것은 인덱스 파일 기준이라 정상
 - AlternativeTo: GPXKit 제출됨(검수 대기). 비슷한 이름의 "GPTKit"은 무관한 AI 도구
