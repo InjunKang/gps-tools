@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ],
     },
     'kml-to-gpx': {
-      title: 'KML GPX 변환기',
-      description: 'Google Earth나 Google 내 지도의 KML을 Garmin, Komoot, Strava 등 GPS 기기와 앱용 GPX로 변환합니다. 무료이고 즉시 변환되며, 아무것도 업로드하지 않습니다.',
+      title: 'KML/KMZ GPX 변환기',
+      description: 'Google Earth나 Google 내 지도의 KML/KMZ를 Garmin, Komoot, Strava 등 GPS 기기와 앱용 GPX로 변환합니다. 무료이고 즉시 변환되며, 아무것도 업로드하지 않습니다.',
       faq: [
         {
           q: 'KML의 요소는 GPX에서 어떻게 되나요?',
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'KMZ 파일도 변환할 수 있나요?',
-          a: '아직 직접은 안 됩니다. KMZ는 ZIP 압축 파일이므로 확장자를 .zip으로 바꿔 압축을 풀고, 안에 있는 doc.kml을 변환하세요.',
+          a: '네. .kmz 파일을 그대로 넣으면 됩니다. 브라우저 안에서 압축을 풀고 안에 있는 KML(보통 doc.kml)을 변환합니다. 압축 파일 속 이미지 등은 GPX에 필요 없으므로 무시합니다.',
         },
       ],
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: '변환되지 않는 것은 무엇인가요?',
-          a: '이 페이지는 아무것도 내려받을 수 없으므로 네트워크 링크는 따라가지 않고, 영역 윤곽과 URL만 남깁니다. 지면 오버레이는 이미지 URL을 icon 속성에 담은 범위 다각형이 되며 이미지 자체는 포함되지 않습니다. 3D 모델과 투어는 건너뜁니다. KMZ는 먼저 압축을 풀어야 합니다. 확장자를 .zip으로 바꿔 풀고 안의 doc.kml을 변환하세요.',
+          a: '이 페이지는 아무것도 내려받을 수 없으므로 네트워크 링크는 따라가지 않고, 영역 윤곽과 URL만 남깁니다. 지면 오버레이는 이미지 URL을 icon 속성에 담은 범위 다각형이 되며 이미지 자체는 포함되지 않습니다. 3D 모델과 투어는 건너뜁니다. KMZ는 그대로 넣으면 안의 KML을 변환하며, 압축 파일 속 이미지는 포함되지 않습니다.',
         },
       ],
     },

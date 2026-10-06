@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ]
     },
     'kml-to-gpx': {
-      title: "KML in GPX umwandeln",
-      description: "KML aus Google Earth oder Google My Maps in GPX für Garmin, Komoot, Strava und andere GPS-Geräte und Apps umwandeln. Kostenlos, sofort und privat – nichts wird hochgeladen.",
+      title: "KML/KMZ in GPX umwandeln",
+      description: "KML oder KMZ aus Google Earth oder Google My Maps in GPX für Garmin, Komoot, Strava und andere GPS-Geräte und Apps umwandeln. Kostenlos, sofort und privat – nichts wird hochgeladen.",
       faq: [
         {
           q: "Wie werden KML-Elemente in GPX übertragen?",
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: "Kann ich eine KMZ-Datei umwandeln?",
-          a: "Noch nicht direkt. Eine KMZ-Datei ist ein ZIP-Archiv: Benennen Sie sie in .zip um, entpacken Sie sie und wandeln Sie die enthaltene doc.kml um."
+          a: "Ja. Ziehen Sie die .kmz-Datei einfach so hinein: Sie wird in Ihrem Browser entpackt, und die enthaltene KML (meist doc.kml) wird umgewandelt. Bilder und andere Dateien im Archiv braucht GPX nicht; sie werden ignoriert."
         }
       ]
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: "Was wird nicht umgewandelt?",
-          a: "Netzwerklinks werden nicht verfolgt, da diese Seite nichts herunterladen kann; nur ihr Regionsumriss und ihre URL bleiben erhalten. Ein Boden-Overlay wird zu einem Polygon seiner Grundfläche mit der Bild-URL in der Property icon, das Bild selbst ist nicht enthalten. 3D-Modelle und Touren werden übersprungen. KMZ-Dateien müssen zuerst entpackt werden: in .zip umbenennen, entpacken und die enthaltene doc.kml umwandeln."
+          a: "Netzwerklinks werden nicht verfolgt, da diese Seite nichts herunterladen kann; nur ihr Regionsumriss und ihre URL bleiben erhalten. Ein Boden-Overlay wird zu einem Polygon seiner Grundfläche mit der Bild-URL in der Property icon, das Bild selbst ist nicht enthalten. 3D-Modelle und Touren werden übersprungen. Eine KMZ-Datei kann direkt verwendet werden: Die enthaltene KML wird umgewandelt, ohne die Bilder aus dem Archiv."
         }
       ]
     },

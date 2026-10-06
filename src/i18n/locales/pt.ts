@@ -77,8 +77,8 @@ export const pack: LocalePack = {
       ],
     },
     'kml-to-gpx': {
-      title: 'Conversor de KML para GPX',
-      description: 'Converta KML do Google Earth ou do Google My Maps em GPX para Garmin, Komoot, Strava e outros dispositivos e apps de GPS. Grátis, instantâneo e privado: nada é enviado.',
+      title: 'Conversor de KML/KMZ para GPX',
+      description: 'Converta KML ou KMZ do Google Earth ou do Google My Maps em GPX para Garmin, Komoot, Strava e outros dispositivos e apps de GPS. Grátis, instantâneo e privado: nada é enviado.',
       faq: [
         {
           q: 'Como os elementos KML viram GPX?',
@@ -90,7 +90,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'Posso converter um arquivo KMZ?',
-          a: 'Ainda não diretamente. Um KMZ é um arquivo ZIP: renomeie para .zip, extraia e converta o doc.kml que está dentro.',
+          a: 'Sim. Solte o arquivo .kmz como está: ele é descompactado no seu navegador e o KML de dentro (geralmente doc.kml) é convertido. Imagens e outros arquivos do pacote não são necessários no GPX e são ignorados.',
         },
       ],
     },
@@ -144,7 +144,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'O que não é convertido?',
-          a: 'Links de rede não são seguidos, porque esta página não pode baixar nada; só o contorno da região e a URL são mantidos. Uma sobreposição de solo vira um polígono da sua área com a URL da imagem na propriedade icon, mas a imagem em si não é incluída. Modelos 3D e tours são ignorados. Arquivos KMZ precisam ser descompactados antes: renomeie para .zip, extraia e converta o doc.kml de dentro.',
+          a: 'Links de rede não são seguidos, porque esta página não pode baixar nada; só o contorno da região e a URL são mantidos. Uma sobreposição de solo vira um polígono da sua área com a URL da imagem na propriedade icon, mas a imagem em si não é incluída. Modelos 3D e tours são ignorados. Um arquivo KMZ pode ser usado como está: o KML de dentro é convertido, sem as imagens do pacote.',
         },
       ],
     },

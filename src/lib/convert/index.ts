@@ -1,4 +1,6 @@
+import { decodeXml } from './decode';
 import { countPoints } from './geometry';
+import { extractKml, isZip } from './kmz';
 import { readGeojson } from './readers/geojson';
 import { readGpx } from './readers/gpx';
 import { readKml } from './readers/kml';
@@ -20,6 +22,11 @@ export const writers: Partial<Record<FormatId, Writer>> = {
   geojson: writeGeojson,
   csv: writeCsv,
 };
+
+/** Turns the bytes of a chosen file into the text a reader expects. KMZ is accepted wherever KML is. */
+export function decodeInput(bytes: Uint8Array, from: FormatId): string {
+  return decodeXml(from === 'kml' && isZip(bytes) ? extractKml(bytes) : bytes);
+}
 
 export function convert(input: string, from: FormatId, to: FormatId): ConvertResult {
   const read = readers[from];

@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ]
     },
     'kml-to-gpx': {
-      title: "KML to GPX Converter",
-      description: "Convert KML from Google Earth or Google My Maps to GPX for Garmin, Komoot, Strava and other GPS devices and apps. Free, instant, and private — nothing is uploaded.",
+      title: "KML/KMZ to GPX Converter",
+      description: "Convert KML or KMZ from Google Earth or Google My Maps to GPX for Garmin, Komoot, Strava and other GPS devices and apps. Free, instant, and private — nothing is uploaded.",
       faq: [
         {
           q: "How are KML features mapped to GPX?",
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: "Can I convert a KMZ file?",
-          a: "Not directly yet. A KMZ is a ZIP archive: rename it to .zip, extract it, and convert the doc.kml file inside."
+          a: "Yes. Drop the .kmz file as it is: it is unzipped in your browser and the KML inside (usually doc.kml) is converted. Images and other files in the archive are not needed for GPX and are ignored."
         }
       ]
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: "What is not converted?",
-          a: "Network links are not followed, because this page cannot download anything; only their region outline and URL are kept. A ground overlay becomes a polygon of its footprint with the image URL in the icon property, but the image itself is not included. 3D models and tours are skipped. KMZ files must be unzipped first: rename to .zip, extract, and convert the doc.kml inside."
+          a: "Network links are not followed, because this page cannot download anything; only their region outline and URL are kept. A ground overlay becomes a polygon of its footprint with the image URL in the icon property, but the image itself is not included. 3D models and tours are skipped. A KMZ file can be dropped as it is: the KML inside is converted, without the images in the archive."
         }
       ]
     },

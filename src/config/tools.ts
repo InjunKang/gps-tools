@@ -41,7 +41,7 @@ const definitions: { slug: ToolSlug; from: FormatId; to: FormatId }[] = [
 
 const formatMeta: Record<FormatId, Omit<FormatDef, 'about'>> = {
   gpx: { label: 'GPX', extension: 'gpx', mime: 'application/gpx+xml' },
-  kml: { label: 'KML', extension: 'kml', mime: 'application/vnd.google-earth.kml+xml' },
+  kml: { label: 'KML', extension: 'kml', alsoAccepts: ['kmz'], mime: 'application/vnd.google-earth.kml+xml' },
   geojson: { label: 'GeoJSON', extension: 'geojson', alsoAccepts: ['json'], mime: 'application/geo+json' },
   csv: { label: 'CSV', extension: 'csv', mime: 'text/csv' },
 };

@@ -3,7 +3,7 @@
 import type { ToolSlug } from '../config/tools';
 import type { ConvertErrorCode, FormatId } from '../lib/convert/types';
 
-export type UiErrorCode = ConvertErrorCode | 'too-large' | 'unknown';
+export type UiErrorCode = ConvertErrorCode | 'unknown';
 
 /** Shared UI strings. `{from}` / `{to}` are replaced with format labels such as "GPX". */
 export interface UiStrings {

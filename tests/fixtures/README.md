@@ -17,3 +17,4 @@ Real-world GPX/KML samples copied unmodified from the test suite of
 | `cdata.kml` | CDATA description |
 | `extended_data.kml` | `ExtendedData` fields → properties |
 | `ground_overlay.kml`, `networklink.kml` | Non-placemark features: outline + URL only |
+| `gxtrack.kmz` | `gxtrack.kml` as `doc.kml` plus `files/notes.txt`, zipped with Windows PowerShell `Compress-Archive`: backslash path separators, `doc.kml` not the first entry |

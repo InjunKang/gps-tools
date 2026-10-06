@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ]
     },
     'kml-to-gpx': {
-      title: "Convertir KML a GPX",
-      description: "Convierte KML de Google Earth o Google My Maps a GPX para Garmin, Komoot, Strava y otros dispositivos y apps GPS. Gratis, al instante y privado: no se sube nada.",
+      title: "Convertir KML/KMZ a GPX",
+      description: "Convierte KML o KMZ de Google Earth o Google My Maps a GPX para Garmin, Komoot, Strava y otros dispositivos y apps GPS. Gratis, al instante y privado: no se sube nada.",
       faq: [
         {
           q: "¿Cómo se trasladan los elementos KML a GPX?",
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: "¿Puedo convertir un archivo KMZ?",
-          a: "Todavía no directamente. Un KMZ es un archivo ZIP: cámbiale la extensión a .zip, descomprímelo y convierte el archivo doc.kml que contiene."
+          a: "Sí. Suelta el archivo .kmz tal cual: se descomprime en tu navegador y se convierte el KML que contiene (normalmente doc.kml). Las imágenes y otros archivos del paquete no hacen falta para GPX y se ignoran."
         }
       ]
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: "¿Qué no se convierte?",
-          a: "Los enlaces de red no se siguen, porque esta página no puede descargar nada; solo se conservan el contorno de su región y su URL. Una superposición de imagen se convierte en un polígono de su huella con la URL de la imagen en la propiedad icon, pero la imagen no se incluye. Los modelos 3D y los recorridos se omiten. Los archivos KMZ deben descomprimirse antes: cambia la extensión a .zip, extrae y convierte el doc.kml que contiene."
+          a: "Los enlaces de red no se siguen, porque esta página no puede descargar nada; solo se conservan el contorno de su región y su URL. Una superposición de imagen se convierte en un polígono de su huella con la URL de la imagen en la propiedad icon, pero la imagen no se incluye. Los modelos 3D y los recorridos se omiten. Un archivo KMZ se puede usar tal cual: se convierte el KML que contiene, sin las imágenes del paquete."
         }
       ]
     },

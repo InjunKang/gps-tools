@@ -6,6 +6,9 @@ import type { Feature, Position } from 'geojson';
 export const fixture = (name: string): string =>
   readFileSync(fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url)), 'utf8');
 
+export const fixtureBytes = (name: string): Uint8Array =>
+  new Uint8Array(readFileSync(fileURLToPath(new URL(`./fixtures/${name}`, import.meta.url))));
+
 /** Parses strictly: any XML error (not just fatal ones) fails the test. */
 export function parseXmlStrict(xml: string) {
   return new DOMParser({

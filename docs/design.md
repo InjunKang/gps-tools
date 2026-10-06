@@ -57,7 +57,7 @@ related tools are derived from shared formats, and `@astrojs/sitemap` emits href
 
 ## Not in v1
 
-Batch conversion / zip, KMZ, map preview, service worker for offline use, automated browser E2E
+Batch conversion / zip, KMZ (input added 2026-10-06), map preview, service worker for offline use, automated browser E2E
 (the worker path was verified manually with headless Chrome), real deployment.
 
 ## Open items for the owner

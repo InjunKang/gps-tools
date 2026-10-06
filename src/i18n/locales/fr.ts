@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ],
     },
     'kml-to-gpx': {
-      title: 'Convertisseur KML vers GPX',
-      description: 'Convertissez du KML de Google Earth ou Google My Maps en GPX pour Garmin, Komoot, Strava et d’autres appareils et applications GPS. Gratuit, instantané et privé : rien n’est envoyé.',
+      title: 'Convertisseur KML/KMZ vers GPX',
+      description: 'Convertissez du KML ou du KMZ de Google Earth ou Google My Maps en GPX pour Garmin, Komoot, Strava et d’autres appareils et apps GPS. Gratuit, instantané et privé : rien n’est envoyé.',
       faq: [
         {
           q: 'Comment les éléments KML sont-ils convertis en GPX ?',
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'Puis-je convertir un fichier KMZ ?',
-          a: 'Pas encore directement. Un KMZ est une archive ZIP : renommez-le en .zip, décompressez-le et convertissez le fichier doc.kml qu’il contient.',
+          a: 'Oui. Déposez le fichier .kmz tel quel : il est décompressé dans votre navigateur et le KML qu’il contient (en général doc.kml) est converti. Les images et autres fichiers de l’archive sont inutiles en GPX et sont ignorés.',
         },
       ],
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'Qu’est-ce qui n’est pas converti ?',
-          a: 'Les liens réseau ne sont pas suivis, car cette page ne peut rien télécharger ; seuls leur contour de région et leur URL sont conservés. Une superposition au sol devient un polygone de son emprise avec l’URL de l’image dans la propriété icon, mais l’image elle-même n’est pas incluse. Les modèles 3D et les visites sont ignorés. Les fichiers KMZ doivent d’abord être décompressés : renommez en .zip, extrayez et convertissez le doc.kml qu’il contient.',
+          a: 'Les liens réseau ne sont pas suivis, car cette page ne peut rien télécharger ; seuls leur contour de région et leur URL sont conservés. Une superposition au sol devient un polygone de son emprise avec l’URL de l’image dans la propriété icon, mais l’image elle-même n’est pas incluse. Les modèles 3D et les visites sont ignorés. Un fichier KMZ s’utilise tel quel : le KML qu’il contient est converti, sans les images de l’archive.',
         },
       ],
     },

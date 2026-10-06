@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ],
     },
     'kml-to-gpx': {
-      title: 'Convertitore da KML a GPX',
-      description: 'Converti KML da Google Earth o Google My Maps in GPX per Garmin, Komoot, Strava e altri dispositivi e app GPS. Gratuito, istantaneo e privato: non viene caricato nulla.',
+      title: 'Convertitore da KML/KMZ a GPX',
+      description: 'Converti KML o KMZ da Google Earth o Google My Maps in GPX per Garmin, Komoot, Strava e altri dispositivi e app GPS. Gratuito, istantaneo e privato: non viene caricato nulla.',
       faq: [
         {
           q: 'Come vengono trasferiti gli elementi KML in GPX?',
@@ -89,7 +89,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'Posso convertire un file KMZ?',
-          a: 'Non ancora direttamente. Un KMZ è un archivio ZIP: rinominalo in .zip, estrailo e converti il file doc.kml al suo interno.',
+          a: 'Sì. Trascina il file .kmz così com’è: viene decompresso nel browser e viene convertito il KML che contiene (di solito doc.kml). Immagini e altri file dell’archivio non servono al GPX e vengono ignorati.',
         },
       ],
     },
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: 'Cosa non viene convertito?',
-          a: 'I network link non vengono seguiti, perché questa pagina non può scaricare nulla; ne restano solo il contorno della regione e l’URL. Un ground overlay diventa un poligono della sua area con l’URL dell’immagine nella proprietà icon, ma l’immagine stessa non è inclusa. Modelli 3D e tour vengono saltati. I file KMZ vanno prima decompressi: rinomina in .zip, estrai e converti il doc.kml contenuto.',
+          a: 'I network link non vengono seguiti, perché questa pagina non può scaricare nulla; ne restano solo il contorno della regione e l’URL. Un ground overlay diventa un poligono della sua area con l’URL dell’immagine nella proprietà icon, ma l’immagine stessa non è inclusa. Modelli 3D e tour vengono saltati. Un file KMZ si può usare così com’è: viene convertito il KML contenuto, senza le immagini dell’archivio.',
         },
       ],
     },
