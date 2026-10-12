@@ -3,7 +3,7 @@ import type { LocalePack } from '../types';
 export const pack: LocalePack = {
   ui: {
     homeTitle: "プライバシー重視のGPSファイル変換ツール",
-    homeDescription: "すべてブラウザ内で動作する無料のGPSファイルツール。GPX、KML、GeoJSON、CSVをアップロードなしで変換できます。",
+    homeDescription: "すべてブラウザ内で動作する無料のGPSファイルツール。GPX、KML、KMZ、GeoJSON、CSVをアップロードなしで変換できます。",
     homeHeading: "ファイルをアップロードしないGPSファイルツール",
     allTools: "すべてのツール",
     privacyBadge: "ファイルがブラウザの外に出ることはありません",
@@ -12,18 +12,18 @@ export const pack: LocalePack = {
     chooseFile: "ファイルを選択",
     converting: "変換中…",
     done: "{to}ファイルの準備ができました",
-    stats: "フィーチャー: {features} · ポイント: {points}",
+    stats: "要素: {features} · ポイント: {points}",
     download: "{to}をダウンロード",
     share: '共有…',
     renameHint: 'ファイルが「unknown」という名前で保存された場合は、{name} に名前を変更してください。',
     convertAnother: "別のファイルを変換",
     tryAgain: "別のファイルを試す",
     errors: {
-      'invalid-file': "このファイルを読み込めませんでした。有効な{from}ではないようです。",
+      'invalid-file': "このファイルを読み込めませんでした。有効な{from}ファイルではないようです。",
       'wrong-format': "これは{from}ファイルではありません。.{ext}ファイルを選択してください。",
       empty: "この{from}ファイルには、変換できるウェイポイント、ルート、トラックがありません。",
       unsupported: "この変換には対応していません。",
-      'not-wgs84': "この{from}ファイルはWGS 84の経度・緯度座標ではありません。EPSG:4326で書き出し直してからお試しください。",
+      'not-wgs84': "この{from}ファイルの座標はWGS 84の経度・緯度ではありません。座標参照系をEPSG:4326にして書き出し直してから、もう一度お試しください。",
       'too-large': "このファイルは200 MBを超えているため、ブラウザでは変換できません。",
       unknown: "変換中に問題が発生しました。ファイルはアップロードされていません。"
     },
@@ -42,7 +42,7 @@ export const pack: LocalePack = {
   },
   formats: {
     gpx: "GPX(GPS Exchange Format)は、GPSデータのためのオープンなXML規格です。ウェイポイント、ルート、トラックを標高やタイムスタンプとともに保存でき、Garmin、Strava、Komoot、Wahooなど多くのアウトドアアプリが入出力に対応しています。",
-    kml: "KML(Keyhole Markup Language)は、Google EarthやGoogleマイマップで使われるXML形式です。目印、パス、ポリゴンを記述でき、gx:Track拡張を使えばタイムスタンプ付きのトラックも保存できます。",
+    kml: "KML(Keyhole Markup Language)は、Google EarthやGoogleマイマップで使われるXML形式です。プレースマーク、パス、ポリゴンを記述でき、gx:Track拡張を使えばタイムスタンプ付きのトラックも保存できます。",
     geojson: "GeoJSON(RFC 7946)は、Leaflet、Mapbox、QGIS、PostGISなどのWeb地図やGISソフトで使われる地理データ用のJSON形式です。座標は「経度、緯度、標高」の順で保存されます。",
     csv: "CSV(カンマ区切り値)は、Excel、Googleスプレッドシート、LibreOffice、R、pandasなどで読み込めるプレーンテキストの表形式です。ジオメトリの概念がないため、GPSデータは緯度・経度の列を持つ1点1行の形式で出力されます。"
   },
@@ -63,7 +63,7 @@ export const pack: LocalePack = {
       faq: [
         {
           q: "GPXからKMLへの変換で何が保持されますか?",
-          a: "ウェイポイント、ルート、トラックと、その名前、説明、標高、タイムスタンプが保持されます。タイムスタンプ付きのトラックはgx:Trackとして出力されるため、Google Earthのタイムスライダーで再生できます。複数セグメントのトラックもセグメント構造を維持します。"
+          a: "ウェイポイント、ルート、トラックと、その名前、説明、標高、タイムスタンプが保持されます。タイムスタンプ付きのトラックはgx:Trackとして出力されるため、Google Earthのタイムスライダーで再生できます。セグメントが分かれたトラックも、その区切りを保ったまま出力されます。"
         },
         {
           q: "失われる情報はありますか?",
@@ -81,7 +81,7 @@ export const pack: LocalePack = {
       faq: [
         {
           q: "KMLの要素はGPXでどう扱われますか?",
-          a: "ポイントの目印はウェイポイントになります。パス(LineString)とgx:Trackはトラックになり、標高と、gx:Trackの場合はタイムスタンプも保持されます。gx:MultiTrackは複数セグメントを持つ1つのトラックになります。名前と説明も引き継がれます。Google Earthで地面に沿って描いたパスは実際の標高ではなく高度0を持つため、標高は出力されません。"
+          a: "ポイントのプレースマークはウェイポイントになります。パス(LineString)とgx:Trackはトラックになり、標高と、gx:Trackの場合はタイムスタンプも保持されます。gx:MultiTrackは複数セグメントを持つ1つのトラックになります。名前と説明も引き継がれます。Google Earthで地表に固定して描いたパスは標高がすべて0として保存されているため、標高は出力されません。"
         },
         {
           q: "ポリゴンやスタイルはどうなりますか?",
@@ -143,7 +143,7 @@ export const pack: LocalePack = {
         },
         {
           q: "変換されないものはありますか?",
-          a: "このページは外部からデータを取得できないため、ネットワークリンクは読み込まれず、領域の輪郭とURLのみが保持されます。地面オーバーレイは表示範囲のポリゴンになり、画像のURLがiconプロパティに入りますが、画像そのものは含まれません。3Dモデルとツアーはスキップされます。KMZファイルはそのままドロップでき、中のKMLが変換されます。アーカイブ内の画像は含まれません。"
+          a: "このページは外部からデータを取得できないため、ネットワークリンクは読み込まれず、領域の輪郭とURLのみが保持されます。グラウンドオーバーレイは表示範囲のポリゴンになり、画像のURLがiconプロパティに入りますが、画像そのものは含まれません。3Dモデルとツアーはスキップされます。KMZファイルはそのままドロップでき、中のKMLが変換されます。アーカイブ内の画像は含まれません。"
         }
       ]
     },
@@ -175,7 +175,7 @@ export const pack: LocalePack = {
         },
         {
           q: "フィーチャーのプロパティは保持されますか?",
-          a: "はい。name(またはtitle)とdescriptionは目印の名前と説明になり、それ以外の文字列・数値・真偽値のプロパティはすべてExtendedDataに出力され、Google Earthの吹き出しに表示されます。入れ子のオブジェクト、配列、空の値はスキップされます。strokeやmarker-colorなどのsimplestyleの色はデータとしては残りますが、目印の見た目には反映されません。"
+          a: "はい。name(またはtitle)とdescriptionはプレースマークの名前と説明になり、それ以外の文字列・数値・真偽値のプロパティはすべてExtendedDataに出力され、Google Earthの吹き出しに表示されます。入れ子のオブジェクト、配列、空の値はスキップされます。strokeやmarker-colorなどのsimplestyleの色はデータとしては残りますが、プレースマークの見た目には反映されません。"
         },
         {
           q: "「WGS 84ではありません」と表示されるのはなぜですか?",
