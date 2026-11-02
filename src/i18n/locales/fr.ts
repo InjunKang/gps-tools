@@ -76,8 +76,8 @@ export const pack: LocalePack = {
       ],
     },
     'kml-to-gpx': {
-      title: 'Convertisseur KML/KMZ vers GPX',
-      description: 'Convertissez du KML ou du KMZ de Google Earth ou Google My Maps en GPX pour Garmin, Komoot, Strava et d’autres appareils et apps GPS. Gratuit, instantané et privé : rien n’est envoyé.',
+      title: 'Convertir KMZ et KML en GPX',
+      description: 'Convertissez un fichier KMZ ou KML de Google Earth ou Google My Maps en GPX pour Garmin, Komoot, Strava et d’autres apps GPS. Gratuit, sans inscription, rien n’est envoyé.',
       faq: [
         {
           q: 'Comment les éléments KML sont-ils convertis en GPX ?',

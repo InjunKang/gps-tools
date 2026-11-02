@@ -77,7 +77,7 @@ export const pack: LocalePack = {
     },
     'kml-to-gpx': {
       title: 'KML/KMZ GPX 변환기',
-      description: 'Google Earth나 Google 내 지도의 KML/KMZ를 Garmin, Komoot, Strava 등 GPS 기기와 앱용 GPX로 변환합니다. 무료이고 즉시 변환되며, 아무것도 업로드하지 않습니다.',
+      description: 'KML·KMZ 파일을 GPX로 무료 변환합니다. Google Earth나 Google 내 지도 데이터를 Garmin, Komoot, Strava 등 GPS 앱에서 쓸 수 있습니다. 가입도 업로드도 필요 없습니다.',
       faq: [
         {
           q: 'KML의 요소는 GPX에서 어떻게 되나요?',
