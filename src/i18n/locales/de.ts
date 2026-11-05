@@ -43,6 +43,7 @@ export const pack: LocalePack = {
   formats: {
     gpx: "GPX (GPS Exchange Format) ist der offene XML-Standard für GPS-Daten. Es speichert Wegpunkte, Routen und Tracks samt Höhe und Zeitstempel und wird von Garmin, Strava, Komoot, Wahoo und den meisten Outdoor-Apps importiert und exportiert.",
     kml: "KML (Keyhole Markup Language) ist das XML-Format von Google Earth und Google My Maps. Es beschreibt Ortsmarken, Pfade und Polygone und kann über die Erweiterung gx:Track auch Tracks mit Zeitstempeln enthalten.",
+    kmz: "KMZ ist eine in ein ZIP-Archiv gepackte KML-Datei und meist nur einen Bruchteil so groß. Google Earth, Google My Maps und die meisten Programme, die KML öffnen, öffnen auch KMZ; das Archiv enthält das Hauptdokument als doc.kml und gegebenenfalls die verwendeten Bilder.",
     geojson: "GeoJSON (RFC 7946) ist das JSON-Format für Geodaten, das Webkarten und GIS-Software wie Leaflet, Mapbox, QGIS und PostGIS verwenden. Koordinaten werden als Längengrad, Breitengrad, Höhe gespeichert.",
     csv: "CSV (Comma-Separated Values) ist das Tabellenformat in Klartext, das Excel, Google Sheets, LibreOffice, R und pandas lesen. Es kennt keine Geometrien, daher werden GPS-Daten als eine Zeile pro Punkt mit Spalten für Breiten- und Längengrad geschrieben."
   },
@@ -90,6 +91,24 @@ export const pack: LocalePack = {
         {
           q: "Kann ich eine KMZ-Datei umwandeln?",
           a: "Ja. Ziehen Sie die .kmz-Datei einfach so hinein: Sie wird in Ihrem Browser entpackt, und die enthaltene KML (meist doc.kml) wird umgewandelt. Bilder und andere Dateien im Archiv braucht GPX nicht; sie werden ignoriert."
+        }
+      ]
+    },
+    'gpx-to-kmz': {
+      title: "GPX in KMZ umwandeln",
+      description: "GPX-Tracks, Routen und Wegpunkte in eine kompakte KMZ-Datei für Google Earth und Google My Maps umwandeln. Kostenlos, ohne Anmeldung – und Ihre Datei verlässt nie den Browser.",
+      faq: [
+        {
+          q: "Was ist der Unterschied zwischen KML und KMZ?",
+          a: "Eine KMZ-Datei ist dasselbe KML-Dokument, komprimiert in einem ZIP-Archiv. Bei einem GPS-Track ist sie meist höchstens ein Viertel so groß – praktisch für E-Mail-Anhänge und Upload-Grenzen. Der Inhalt ist identisch: Dieses Tool legt das KML als doc.kml in das Archiv."
+        },
+        {
+          q: "Was bleibt erhalten, was geht verloren?",
+          a: "Wegpunkte, Routen und Tracks mit Namen, Beschreibungen, Höhe und Zeitstempeln; Tracks mit Zeitstempeln werden als gx:Track geschrieben, sodass Google Earth sie abspielen kann. Sensordaten aus GPX-Erweiterungen wie Herz- und Trittfrequenz haben in KML keine Entsprechung und entfallen, und ein Tracksegment mit nur einem Punkt wird übersprungen."
+        },
+        {
+          q: "Wie öffne ich die KMZ-Datei?",
+          a: "In Google Earth im Web wählen Sie Datei → KML-Datei importieren (KMZ wird ebenfalls angenommen), in Google Earth Pro Datei → Öffnen. In Google My Maps fügen Sie eine Ebene hinzu und klicken auf Importieren."
         }
       ]
     },

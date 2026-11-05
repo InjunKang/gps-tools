@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-import { convert, ConvertError, decodeInput } from '../lib/convert';
+import { convert, ConvertError, decodeInput, encodeOutput } from '../lib/convert';
 import type { ConvertRequest, ConvertResponse } from './protocol';
 import { readBytes } from './read-bytes';
 
@@ -11,7 +11,7 @@ self.onmessage = async (event: MessageEvent<ConvertRequest>) => {
     // Not file.text(): that always assumes UTF-8, XML files declare their own encoding, and a KMZ is binary.
     const input = decodeInput(await readBytes(file), from);
     const { output, stats } = convert(input, from, to);
-    response = { ok: true, blob: new Blob([output], { type: mime }), stats };
+    response = { ok: true, blob: new Blob([encodeOutput(output, to)], { type: mime }), stats };
   } catch (e) {
     response =
       e instanceof ConvertError

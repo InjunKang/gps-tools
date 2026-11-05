@@ -43,6 +43,7 @@ export const pack: LocalePack = {
   formats: {
     gpx: "GPX(GPS Exchange Format)は、GPSデータのためのオープンなXML規格です。ウェイポイント、ルート、トラックを標高やタイムスタンプとともに保存でき、Garmin、Strava、Komoot、Wahooなど多くのアウトドアアプリが入出力に対応しています。",
     kml: "KML(Keyhole Markup Language)は、Google EarthやGoogleマイマップで使われるXML形式です。プレースマーク、パス、ポリゴンを記述でき、gx:Track拡張を使えばタイムスタンプ付きのトラックも保存できます。",
+    kmz: "KMZは、KMLファイルをZIP形式で圧縮したもので、多くの場合サイズが大幅に小さくなります。Google Earth、Googleマイマップなど、KMLを開けるアプリの多くはKMZも開けます。アーカイブにはメインの文書がdoc.kmlとして、使用する画像があればそれも一緒に格納されます。",
     geojson: "GeoJSON(RFC 7946)は、Leaflet、Mapbox、QGIS、PostGISなどのWeb地図やGISソフトで使われる地理データ用のJSON形式です。座標は「経度、緯度、標高」の順で保存されます。",
     csv: "CSV(カンマ区切り値)は、Excel、Googleスプレッドシート、LibreOffice、R、pandasなどで読み込めるプレーンテキストの表形式です。ジオメトリの概念がないため、GPSデータは緯度・経度の列を持つ1点1行の形式で出力されます。"
   },
@@ -90,6 +91,24 @@ export const pack: LocalePack = {
         {
           q: "KMZファイルは変換できますか?",
           a: "はい。.kmzファイルをそのままドロップしてください。ブラウザ内で展開し、中のKML(通常はdoc.kml)を変換します。アーカイブ内の画像などのファイルはGPXでは使わないため無視されます。"
+        }
+      ]
+    },
+    'gpx-to-kmz': {
+      title: "GPX KMZ 変換ツール",
+      description: "GPXのトラック、ルート、ウェイポイントを、Google EarthやGoogleマイマップ用のコンパクトなKMZに変換します。無料・登録不要で、ファイルがブラウザの外に出ることはありません。",
+      faq: [
+        {
+          q: "KMLとKMZの違いは何ですか?",
+          a: "KMZは、同じKML文書をZIP形式で圧縮したものです。GPSトラックなら多くの場合サイズが4分の1以下になり、メール添付やアップロードの容量制限に収まりやすくなります。内容は同じで、このツールはKMLをアーカイブ内のdoc.kmlとして書き出します。"
+        },
+        {
+          q: "何が保持され、何が失われますか?",
+          a: "ウェイポイント、ルート、トラックと、その名前、説明、標高、タイムスタンプが保持されます。タイムスタンプ付きのトラックはgx:Trackとして出力され、Google Earthで再生できます。心拍数やケイデンスなどGPX拡張のセンサーデータはKMLに対応する要素がないため失われ、1点しかないトラックセグメントはスキップされます。"
+        },
+        {
+          q: "KMZファイルを開くには?",
+          a: "Web版Google Earthでは「ファイル」→「KMLファイルをインポート」(KMZにも対応)、Google Earth Proでは「ファイル」→「開く」を選びます。Googleマイマップではレイヤを追加して「インポート」をクリックします。"
         }
       ]
     },

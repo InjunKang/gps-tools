@@ -1,6 +1,7 @@
 import type { FeatureCollection } from 'geojson';
 
-export type FormatId = 'gpx' | 'kml' | 'geojson' | 'csv';
+/** `kmz` is output-only: KMZ input is read by the `kml` tools (see `decodeInput`). */
+export type FormatId = 'gpx' | 'kml' | 'kmz' | 'geojson' | 'csv';
 
 export type Reader = (text: string) => FeatureCollection;
 export type Writer = (fc: FeatureCollection) => string;

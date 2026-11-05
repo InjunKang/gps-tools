@@ -43,6 +43,7 @@ export const pack: LocalePack = {
   formats: {
     gpx: 'GPX(GPS Exchange Format)는 GPS 데이터를 위한 공개 XML 표준입니다. 웨이포인트, 루트, 트랙을 고도·시간과 함께 저장하며, Garmin, Strava, Komoot, Wahoo를 비롯한 대부분의 아웃도어 앱이 가져오기와 내보내기에 사용합니다.',
     kml: 'KML(Keyhole Markup Language)은 Google Earth와 Google 내 지도에서 쓰는 XML 형식입니다. 위치 표시, 경로, 다각형을 표현하고, gx:Track 확장을 통해 시간 정보가 있는 트랙도 담을 수 있습니다.',
+    kmz: 'KMZ는 KML 파일을 ZIP으로 압축한 형식으로, 보통 크기가 훨씬 작습니다. Google Earth, Google 내 지도 등 KML을 여는 앱 대부분이 KMZ도 엽니다. 압축 파일 안에는 기본 문서가 doc.kml로 들어 있고, 사용하는 이미지가 있으면 함께 담깁니다.',
     geojson: 'GeoJSON(RFC 7946)은 Leaflet, Mapbox, QGIS, PostGIS 같은 웹 지도와 GIS 소프트웨어가 쓰는 지리 데이터용 JSON 형식입니다. 좌표는 경도, 위도, 고도 순서로 저장됩니다.',
     csv: 'CSV(쉼표로 구분된 값)는 Excel, Google 스프레드시트, LibreOffice, R, pandas가 모두 읽는 일반 텍스트 표 형식입니다. 도형 개념이 없어서 GPS 데이터는 위도·경도 열을 가진 한 점당 한 행으로 기록됩니다.',
   },
@@ -90,6 +91,24 @@ export const pack: LocalePack = {
         {
           q: 'KMZ 파일도 변환할 수 있나요?',
           a: '네. .kmz 파일을 그대로 넣으면 됩니다. 브라우저 안에서 압축을 풀고 안에 있는 KML(보통 doc.kml)을 변환합니다. 압축 파일 속 이미지 등은 GPX에 필요 없으므로 무시합니다.',
+        },
+      ],
+    },
+    'gpx-to-kmz': {
+      title: 'GPX KMZ 변환기',
+      description: 'GPX 트랙, 루트, 웨이포인트를 Google Earth와 Google 내 지도용 KMZ 파일로 작게 변환합니다. 무료이고 가입이 필요 없으며, 파일은 브라우저 밖으로 나가지 않습니다.',
+      faq: [
+        {
+          q: 'KML과 KMZ는 무엇이 다른가요?',
+          a: 'KMZ는 같은 KML 문서를 ZIP으로 압축한 것입니다. GPS 트랙이라면 보통 크기가 4분의 1 이하로 줄어 메일 첨부나 업로드 용량 제한에 유리합니다. 내용은 같으며, 이 도구는 KML을 압축 파일 안에 doc.kml로 넣습니다.',
+        },
+        {
+          q: '무엇이 유지되고 무엇이 사라지나요?',
+          a: '웨이포인트, 루트, 트랙과 각각의 이름, 설명, 고도, 시간이 유지됩니다. 시간이 있는 트랙은 gx:Track으로 기록되어 Google Earth에서 재생할 수 있습니다. 심박수, 케이던스처럼 GPX 확장에 저장된 센서 데이터는 KML에 대응하는 요소가 없어 사라지고, 점이 하나뿐인 트랙 세그먼트는 건너뜁니다.',
+        },
+        {
+          q: 'KMZ 파일은 어떻게 여나요?',
+          a: '웹 Google Earth에서는 파일 → KML 파일 가져오기(KMZ도 됩니다)를, Google Earth Pro에서는 파일 → 열기를 선택합니다. Google 내 지도에서는 레이어를 추가하고 가져오기를 누릅니다.',
         },
       ],
     },

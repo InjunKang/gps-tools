@@ -26,12 +26,22 @@ export interface ToolDef {
   i18n: Record<Locale, ToolCopy>;
 }
 
-export const TOOL_SLUGS = ['gpx-to-kml', 'kml-to-gpx', 'gpx-to-geojson', 'gpx-to-csv', 'kml-to-geojson', 'geojson-to-gpx', 'geojson-to-kml'] as const;
+export const TOOL_SLUGS = [
+  'gpx-to-kml',
+  'kml-to-gpx',
+  'gpx-to-kmz',
+  'gpx-to-geojson',
+  'gpx-to-csv',
+  'kml-to-geojson',
+  'geojson-to-gpx',
+  'geojson-to-kml',
+] as const;
 export type ToolSlug = (typeof TOOL_SLUGS)[number];
 
 const definitions: { slug: ToolSlug; from: FormatId; to: FormatId }[] = [
   { slug: 'gpx-to-kml', from: 'gpx', to: 'kml' },
   { slug: 'kml-to-gpx', from: 'kml', to: 'gpx' },
+  { slug: 'gpx-to-kmz', from: 'gpx', to: 'kmz' },
   { slug: 'gpx-to-geojson', from: 'gpx', to: 'geojson' },
   { slug: 'gpx-to-csv', from: 'gpx', to: 'csv' },
   { slug: 'kml-to-geojson', from: 'kml', to: 'geojson' },
@@ -42,6 +52,7 @@ const definitions: { slug: ToolSlug; from: FormatId; to: FormatId }[] = [
 const formatMeta: Record<FormatId, Omit<FormatDef, 'about'>> = {
   gpx: { label: 'GPX', extension: 'gpx', mime: 'application/gpx+xml' },
   kml: { label: 'KML', extension: 'kml', alsoAccepts: ['kmz'], mime: 'application/vnd.google-earth.kml+xml' },
+  kmz: { label: 'KMZ', extension: 'kmz', mime: 'application/vnd.google-earth.kmz' },
   geojson: { label: 'GeoJSON', extension: 'geojson', alsoAccepts: ['json'], mime: 'application/geo+json' },
   csv: { label: 'CSV', extension: 'csv', mime: 'text/csv' },
 };

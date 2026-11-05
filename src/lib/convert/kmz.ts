@@ -1,4 +1,4 @@
-import { unzipSync } from 'fflate';
+import { strToU8, unzipSync, zipSync } from 'fflate';
 import { ConvertError } from './types';
 
 // A KMZ is a ZIP archive holding one main KML plus the images it references. Not the browser's
@@ -23,6 +23,15 @@ function unzip(zip: Uint8Array, filter: (file: { name: string; originalSize: num
     throw new ConvertError('invalid-file', `unreadable KMZ: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
+
+/**
+ * Packs a KML document as a KMZ: a single `doc.kml` at the archive root, the name Google Earth
+ * looks for first. Our KML writer declares UTF-8, and `strToU8` encodes UTF-8.
+ * fflate types its result as possibly shared memory; `zipSync` always allocates a plain ArrayBuffer,
+ * which is what `Blob` requires.
+ */
+export const packKmz = (kml: string): Uint8Array<ArrayBuffer> =>
+  zipSync({ 'doc.kml': strToU8(kml) }) as Uint8Array<ArrayBuffer>;
 
 /**
  * Returns the bytes of the main KML in a KMZ: `doc.kml` at the root, otherwise the first `.kml`

@@ -63,9 +63,9 @@ describe('tools config', () => {
     const gpxToKml = tools.find((t) => t.slug === 'gpx-to-kml')!;
     expect(relatedTools(gpxToKml).map((t) => t.slug)).toEqual([
       'kml-to-gpx', // exact reverse
-      'gpx-to-geojson', // same input format
+      'gpx-to-kmz', // same input format, in definition order
+      'gpx-to-geojson',
       'gpx-to-csv',
-      'kml-to-geojson', // reads what this tool writes
     ]);
   });
 });

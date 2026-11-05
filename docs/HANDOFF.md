@@ -9,9 +9,9 @@
 |---|---|
 | 운영 주소 | https://gpxkit.com (Cloudflare Workers 정적 자산) |
 | 리포 | https://github.com/InjunKang/gps-tools — 공개, MIT |
-| 도구 | 7개: GPX→KML, KML→GPX, GPX→GeoJSON, GPX→CSV, KML→GeoJSON, GeoJSON→GPX, GeoJSON→KML |
-| 언어 | 8개: en(기본), de, ja, es, ko, fr, it, pt — 총 65페이지 |
-| 테스트 | 93개 통과 (`npm run verify` = 타입 검사 + 빌드 + 테스트) |
+| 도구 | 8개: GPX→KML, KML(KMZ)→GPX, GPX→KMZ, GPX→GeoJSON, GPX→CSV, KML→GeoJSON, GeoJSON→GPX, GeoJSON→KML |
+| 언어 | 8개: en(기본), de, ja, es, ko, fr, it, pt — 총 73페이지 |
+| 테스트 | 99개 통과 (`npm run verify` = 타입 검사 + 빌드 + 테스트) |
 | 배포 | `main`에 push하면 GitHub Actions(CI)와 Cloudflare Workers Builds가 자동 실행 |
 | Lighthouse | 모바일 기준 성능·접근성·Best Practices·SEO 모두 100 |
 | 검색엔진 | 구글 서치 콘솔(도메인 속성)·Bing 등록 완료, 사이트맵 처리 완료 |
@@ -45,7 +45,7 @@
 ## 4. 다음 작업 후보 (검색어 데이터를 보고 고를 것)
 
 - 새 도구: KML→CSV, GeoJSON→CSV는 설정 항목만 추가하면 됨. TCX/FIT 입력은 reader가 필요해 큼.
-- KMZ 출력(GPX→KMZ): 입력은 2026-10-06에 추가됨(KML 도구가 .kmz를 받음). 스페인어 "convertir gpx a kmz" 노출이 늘면 fflate `zipSync`로 writer 추가.
+- KMZ 출력: GPX→KMZ는 2026-11-05에 추가됨(`kmz` 포맷 = KML writer + `encodeOutput()`이 `doc.kml` 하나로 압축). GeoJSON→KMZ도 설정 항목과 8개 언어 문구만 추가하면 됨.
 - 다중 파일 일괄 변환(zip 다운로드).
 - IndexNow: 도구를 자주 추가하게 되면 Bing에 즉시 알리는 용도. 사이트 루트에 키 `.txt` 파일 필요.
 

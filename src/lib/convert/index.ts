@@ -1,6 +1,6 @@
 import { decodeXml } from './decode';
 import { countPoints } from './geometry';
-import { extractKml, isZip } from './kmz';
+import { extractKml, isZip, packKmz } from './kmz';
 import { readGeojson } from './readers/geojson';
 import { readGpx } from './readers/gpx';
 import { readKml } from './readers/kml';
@@ -19,6 +19,8 @@ export const readers: Partial<Record<FormatId, Reader>> = { gpx: readGpx, kml: r
 export const writers: Partial<Record<FormatId, Writer>> = {
   gpx: writeGpx,
   kml: writeKml,
+  // The KML document that goes inside the archive; `encodeOutput` zips it.
+  kmz: writeKml,
   geojson: writeGeojson,
   csv: writeCsv,
 };
@@ -26,6 +28,11 @@ export const writers: Partial<Record<FormatId, Writer>> = {
 /** Turns the bytes of a chosen file into the text a reader expects. KMZ is accepted wherever KML is. */
 export function decodeInput(bytes: Uint8Array, from: FormatId): string {
   return decodeXml(from === 'kml' && isZip(bytes) ? extractKml(bytes) : bytes);
+}
+
+/** The reverse of `decodeInput`: turns a writer's text into the file's contents. Only KMZ is binary. */
+export function encodeOutput(text: string, to: FormatId): string | Uint8Array<ArrayBuffer> {
+  return to === 'kmz' ? packKmz(text) : text;
 }
 
 export function convert(input: string, from: FormatId, to: FormatId): ConvertResult {
